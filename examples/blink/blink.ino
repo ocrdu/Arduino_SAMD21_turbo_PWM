@@ -2,7 +2,7 @@
 
 #include <SAMD21turboPWM.h>
 
-turboPWM pwm;
+TurboPWM pwm;
 
 void setup() {
   pwm.setClockDivider(1, false);

@@ -1,6 +1,6 @@
 #include "SAMD21turboPWM.h"
 
-void turboPWM::setClockDivider(unsigned int GCLKDiv, bool turbo) {
+void TurboPWM::setClockDivider(unsigned int GCLKDiv, bool turbo) {
   // Limit GCLKDiv to 1 - 255
   if (GCLKDiv < 1) {
     GCLKDiv = 1;
@@ -54,7 +54,7 @@ void turboPWM::setClockDivider(unsigned int GCLKDiv, bool turbo) {
   while (GCLK->STATUS.bit.SYNCBUSY);
 }
 
-int turboPWM::timer(int timernumber, unsigned int TCCDiv, unsigned long int sts, bool fastPWM) {
+int TurboPWM::timer(int timernumber, unsigned int TCCDiv, unsigned long int sts, bool fastPWM) {
   // Derive TCC prescaler from parameter TCCDiv; default to 4
   unsigned int my_TCC_CTRLA_PRESCALER_DIV;
   if (TCCDiv == 1) {
@@ -122,7 +122,7 @@ int turboPWM::timer(int timernumber, unsigned int TCCDiv, unsigned long int sts,
   }
 }
 
-int turboPWM::analogWrite(unsigned int pin, unsigned int dC) {
+int TurboPWM::analogWrite(unsigned int pin, unsigned int dC) {
   // Check if an acceptable pin is used
   if (pin != 4 && pin != 5 && pin != 6 && pin != 7 && pin != 8 && pin != 13) {
     return 0;
@@ -179,7 +179,7 @@ int turboPWM::analogWrite(unsigned int pin, unsigned int dC) {
   return pin;
 }
 
-void turboPWM::enable(int timernumber, bool enabled) {
+void TurboPWM::enable(int timernumber, bool enabled) {
   if (timernumber == 0) {
     _enabled0 = enabled;
     if (_enabled0) {
@@ -199,7 +199,7 @@ void turboPWM::enable(int timernumber, bool enabled) {
   }
 }
 
-float turboPWM::frequency(int timer) {
+float TurboPWM::frequency(int timer) {
   float fastDivider;
   float PLL96M;
   if (_turbo) {

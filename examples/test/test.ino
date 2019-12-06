@@ -4,7 +4,7 @@
 
 #include <SAMD21turboPWM.h>
 
-turboPWM pwm;
+TurboPWM pwm;
 const int statusLED = 13;
 const int otherLED = 7;
 
