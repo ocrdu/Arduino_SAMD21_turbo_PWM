@@ -1,8 +1,10 @@
 #include <Arduino.h>
+#define GCLK_GENCTRL_SRC_DPLL96M_Val 0x8ul
+#define GCLK_GENCTRL_SRC_DPLL96M (GCLK_GENCTRL_SRC_DPLL96M_Val << GCLK_GENCTRL_SRC_Pos)
 
 class turboPWM {
   public:
-    void setClockDivider(unsigned int GCLKDiv);
+    void setClockDivider(unsigned int GCLKDiv, bool turbo);
     int timer(int timernumber, unsigned int TCCDiv, unsigned long int sts, bool fastPWM);
     int analogWrite(unsigned int pin, unsigned int dC);
     void enable(int timernumber, bool enabled);
@@ -17,4 +19,5 @@ class turboPWM {
     bool _fastPWM1 = false;           // False for phase-correct PWM, true for fast aka normal PWM
     bool _enabled0 = true;            // Shows if TCC0 is enabled
     bool _enabled1 = true;            // Shows if TCC1 is enabled
+    bool _turbo = false;
 };
