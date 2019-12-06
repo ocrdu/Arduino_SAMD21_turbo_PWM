@@ -1,0 +1,21 @@
+#######################################
+# Syntax Coloring Map for Arduino_SAMD21_turbo_PWM
+####################################### 
+# Class
+#######################################
+
+turboPWM	KEYWORD1
+
+#######################################
+# Methods and Functions 
+#######################################	
+
+setClockDivider	KEYWORD2
+timer	KEYWORD2
+analogWrite	KEYWORD2
+enable	KEYWORD2
+frequency	KEYWORD2
+
+#######################################
+# Constants
+#######################################

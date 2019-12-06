@@ -1,0 +1,74 @@
+SAMD21G18 timer/channel: pins
+TCC0/WO[0]: PA04, PA08         TCC0/WO[4]: PA14, PA22, PB10
+TCC0/WO[1]: PA05, PA09         TCC0/WO[5]: PA15, PA23, PB11
+TCC0/WO[2]: PA10, PA18         TCC0/WO[6]: PA12, PA16, PA20
+TCC0/WO[3]: PA11, PA19         TCC0/WO[7]: PA13, PA17, PA21
+
+TCC1/WO[0]: PA06, PA10, PA30   TCC1/WO[2]: PA08, PA24
+TCC1/WO[1]: PA07, PA11, PA31   TCC1/WO[3]: PA09, PA25
+
+------------------------------------------------------------------------------------------------------
+
+Arduino Nano 33 IoT:
+
+Pin Translation Table:
+TCC0 pins                          TCC1 pins
+PA04: D6                           PA06: D7
+PA05: D5                           PA07: D4
+PA08: RSTN_NINA (to NINA)          PA08: RSTN_NINA (to NINA)
+PA09: A6                           PA09: A6
+PA10: A3                           PA10: A3
+PA11: A2                           PA11: A2
+PA12: PA12_S2_TX/MOSI (to NINA)    PA24: DM (USB)
+PA13: PA13_S2_RX/MISO (to NINA)    PA25: DP (USB)
+PA14: PA14_S2_RTS/CS (to NINA)     PA30: SWCLK
+PA15: PA15_S2_CTS/SCK (to NINA)    PA31: SWDIO
+PA16: D11/MOSI
+PA17: D13/SCK (LED)
+PA18: D8
+PA19: D12/MISO
+PA20: D9
+PA21: D10
+PA22: TX_NINA_PROG (to NINA)
+PA23: RX_NINA_PROG (to NINA)
+PB10: D2
+PB11: D3
+
+Useable pins for TCC0 on Arduino Nano 33 IoT: D2, D3, D5, D6, D8, D9, D10, D11, D12, D13, A2, A3, A6
+Useable pins for TCC1 on Arduino Nano 33 IoT: D4, D7, A2, A3, A6
+
+(Arduino Pin:SAMD21 Pin:TCCx/output channel:PMUXoddeven_x)
+Picked pins for TCC0: D5:PA05:TCC0/WO1:E, D6:PA04:TCC0/WO0:E, D8:PA18:TCC0/WO2:F, D13:PA17:TCC0/WO3:F
+Picked pins for TCC1: D4:PA07:TCC0/WO1:E, D7:PA06:TCC0/WO0:E 
+
+------------------------------------------------------------------------------------------------------
+
+Arduino MKR WiFi 1010:
+
+Pin Translation Table:
+TCC0 pins:                         TCC1 pins:
+PA04: A3                           PA06: A5
+PA05: A4                           PA07: A6
+PA08: D11/I2C SDA                  PA08: D11/I2C_SDA
+PA09: D12/I2C SCL                  PA09: D12/I2C_SCL
+PA10: D2                           PA10: D2
+PA11: D3                           PA11: D3
+PA12: PA12_S2_TX/MOSI (to NINA)    PA24: DM (USB)
+PA13: PA13_S2_RX/MISO (to NINA)    PA25: DP (USB)
+PA14: PA14_S2_RTS/CS (to NINA)     PA30: SWCLK
+PA15: PA15_S2_CTS/SCK (to NINA)    PA31: SWDIO
+PA16: D8/MOSI
+PA17: D9/SCK
+PA18: OTG (to USB)
+PA19: D10/MISO
+PA20: D6 (LED)
+PA21: D7
+PA22: D0
+PA23: D1
+PB10: D4
+PB11: D5
+
+Useable pins for TCC0 on Arduino MKR 1010: D2, D3, D4, D5, D6, D8, D9, D10, D11, D12, A3, A4
+Useable pins for TCC1 on Arduino MKR 1010: D2, D3, A5, A6
+
+(Arduino Pin:SAMD21 Pin:TCCx/output channel:PMUXoddeven_x)
