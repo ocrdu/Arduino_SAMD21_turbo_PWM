@@ -1,15 +1,13 @@
 // Uses the built-in LED.
 
-// Program will start when Serial Monitor is opened.
-
 #include <SAMD21turboPWM.h>
 
 turboPWM pwm;
 
 void setup() {
-  pwm.setClockDivider(1);
+  pwm.setClockDivider(1, false);
   pwm.timer(0, 16, 6000000, true);
-  pwm.analogWrite(13, 1000);
+  pwm.analogWrite(13, 500);
 }
 
 void loop() {}

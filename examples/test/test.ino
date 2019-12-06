@@ -9,9 +9,9 @@ const int statusLED = 13;
 const int otherLED = 7;
 
 void setup() {
-  pwm.setClockDivider(1, true);     // 48Mhz clock is divided by 1 and sent to Generic Clock
-  pwm.timer(0, 16, 750000, true);   // Timer 0 is set to Generic Clock divided by 16, resolution is 750000, fast PWM 
-  pwm.timer(1, 1, 240, false);      // Timer 1 is set to Generic Clock divided by 1, resolution is 240, phase-correct aka dual-slope PWM
+  pwm.setClockDivider(1, false);    // Input clock is divided by 1 and sent to Generic Clock, Turbo is On
+  pwm.timer(0, 16, 750000, false);  // Timer 0 is set to Generic Clock divided by 16, resolution is 750000, phase-correct aka dual-slope PWM 
+  pwm.timer(1, 1, 255, true);       // Timer 1 is set to Generic Clock divided by 1, resolution is 255, normal aka fast aka single-slope PWM
 
   Serial.begin(115200);
   while(!Serial);
@@ -31,7 +31,7 @@ void setup() {
  pwm.enable(1, false);
   delay(2000);
 
- pwm.timer(1, 1, 48, true); 
+ pwm.timer(1, 1, 96, true); 
  pwm.analogWrite(otherLED, 600);
   Serial.print("PWM frequency: "); Serial.print(pwm.frequency(1)); Serial.println("Hz");
   Serial.println("Duty cycle: 600/1000\n");
