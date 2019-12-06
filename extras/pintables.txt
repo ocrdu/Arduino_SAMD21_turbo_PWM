@@ -12,7 +12,7 @@ TCC1/WO[1]: PA07, PA11, PA31   TCC1/WO[3]: PA09, PA25
 Arduino Nano 33 IoT:
 
 Pin Translation Table:
-TCC0 pins                          TCC1 pins
+TCC0 pins:                         TCC1 pins:
 PA04: D6                           PA06: D7
 PA05: D5                           PA07: D4
 PA08: RSTN_NINA (to NINA)          PA08: RSTN_NINA (to NINA)
