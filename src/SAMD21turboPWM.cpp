@@ -1,7 +1,7 @@
 #include "SAMD21turboPWM.h"
 
 void turboPWM::setClockDivider(unsigned int GCLKDiv, bool turbo) {
-  //Limit GCLKDiv to 1 - 255
+  // Limit GCLKDiv to 1 - 255
   if (GCLKDiv < 1) {
     GCLKDiv = 1;
   }
@@ -78,7 +78,7 @@ int turboPWM::timer(int timernumber, unsigned int TCCDiv, unsigned long int sts,
     TCCDiv = 4;
   }
 
-  //Limit resolution to 24 bits
+  // Limit resolution to 24 bits
   if (sts < 2) {
     sts = 2;
   }
@@ -86,7 +86,7 @@ int turboPWM::timer(int timernumber, unsigned int TCCDiv, unsigned long int sts,
     sts = 0xFFFFFF;
   }
   
-  //Set prescaler TCCDiv for TCCx, select single or dual slope PWM, and set the resolution
+  // Set prescaler TCCDiv for TCCx, select single or dual slope PWM, and set the resolution
   if (timernumber == 0) {
     _TCCDiv0 = TCCDiv;
     _sts0 = sts;
@@ -123,12 +123,12 @@ int turboPWM::timer(int timernumber, unsigned int TCCDiv, unsigned long int sts,
 }
 
 int turboPWM::analogWrite(unsigned int pin, unsigned int dC) {
-  //Check if an acceptable pin is used
+  // Check if an acceptable pin is used
   if (pin != 4 && pin != 5 && pin != 6 && pin != 7 && pin != 8 && pin != 13) {
     return 0;
   }
 
-  //limit dutycycle to 0-1000
+  // limit dutycycle to 0-1000
   if (dC < 0) {
     dC = 0;
   }
@@ -136,7 +136,7 @@ int turboPWM::analogWrite(unsigned int pin, unsigned int dC) {
     dC = 1000;
   }
   
-  //Enable a SAMD21 pin as multiplexed and connect it to a pin using the port multiplexer
+  // Enable a SAMD21 pin as multiplexed and connect it to a pin using the port multiplexer
   unsigned int realPort = g_APinDescription[pin].ulPort;
   unsigned int realPin = g_APinDescription[pin].ulPin;
   unsigned long int my_PORT_PMUX;
@@ -156,7 +156,7 @@ int turboPWM::analogWrite(unsigned int pin, unsigned int dC) {
   PORT->Group[realPort].PINCFG[realPin].bit.PMUXEN = 1;
   PORT->Group[realPort].PMUX[realPin >> 1].reg = my_PORT_PMUX;
   
-  //Set duty cycle
+  // Set duty cycle
   if (pin == 4) {
     REG_TCC1_CCB1 = (_sts1 * dC) / 1000;
     while (TCC1->SYNCBUSY.bit.CCB1);
