@@ -39,7 +39,7 @@ Useable pins for TCC1 on Arduino Nano 33 IoT: D4, D7, A2, A3, A6
 
 (Arduino Pin:SAMD21 Pin:TCCx/output channel:PMUXoddeven_x)
 Picked pins for TCC0: D5:PA05:TCC0/WO1:E, D6:PA04:TCC0/WO0:E, D8:PA18:TCC0/WO2:F, D13:PA17:TCC0/WO3:F
-Picked pins for TCC1: D4:PA07:TCC0/WO1:E, D7:PA06:TCC0/WO0:E 
+Picked pins for TCC1: D4:PA07:TCC1/WO1:E, D7:PA06:TCC1/WO0:E 
 
 ------------------------------------------------------------------------------------------------------
 

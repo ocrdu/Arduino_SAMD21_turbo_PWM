@@ -2,6 +2,22 @@
 #define GCLK_GENCTRL_SRC_DPLL96M_Val 0x8ul
 #define GCLK_GENCTRL_SRC_DPLL96M (GCLK_GENCTRL_SRC_DPLL96M_Val << GCLK_GENCTRL_SRC_Pos)
 
+typedef struct { 
+  unsigned int arduinoPin;
+  unsigned int port; 
+  unsigned int samd21Pin; 
+  unsigned long int countRegister;
+  unsigned long int pMux;
+} PinLookup;
+
+//This is the pin table for the Arduino Nano 33 IOT
+static const PinLookup pinTable[] = {{ 4, PORTA,  7, REG_TCC1_CCB1, PORT_PMUX_PMUXO_E},
+                                     { 5, PORTA,  5, REG_TCC0_CCB1, PORT_PMUX_PMUXO_E},
+                                     { 6, PORTA,  4, REG_TCC0_CCB0, PORT_PMUX_PMUXE_E},
+                                     { 7, PORTA,  6, REG_TCC1_CCB0, PORT_PMUX_PMUXE_E},
+                                     { 8, PORTA, 18, REG_TCC0_CCB2, PORT_PMUX_PMUXE_F},
+                                     {13, PORTA, 17, REG_TCC0_CCB3, PORT_PMUX_PMUXO_F}};
+
 class TurboPWM {
   public:
     void setClockDivider(unsigned int GCLKDiv, bool turbo);
