@@ -49,6 +49,11 @@ void setup() {
   Serial.println("Duty cycle: 500/1000\n");
   delay(2000);
 
+ pwm.analogWrite(otherLED, 50);
+  Serial.print("PWM frequency: "); Serial.print(pwm.frequency(1)); Serial.println("Hz");
+  Serial.println("Duty cycle: 50/1000\n");
+  delay(2000);
+
   Serial.println("Pulsing in the loop ...");
 }
 

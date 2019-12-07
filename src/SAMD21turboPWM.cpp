@@ -124,7 +124,13 @@ int TurboPWM::timer(int timernumber, unsigned int TCCDiv, unsigned long int sts,
 
 int TurboPWM::analogWrite(unsigned int pin, unsigned int dC) {
   // Check if an acceptable pin is used
-  if (pin != 4 && pin != 5 && pin != 6 && pin != 7 && pin != 8 && pin != 13) {
+  int i;
+  for (i = 0; i < pinTableSize; i++) {
+    if (pinTable[i].arduinoPin == pin) {
+      break;
+    }
+  }
+  if (i >= pinTableSize) {
     return 0;
   }
 
@@ -135,52 +141,36 @@ int TurboPWM::analogWrite(unsigned int pin, unsigned int dC) {
   if (dC > 1000) {
     dC = 1000;
   }
-  
+
   // Enable a SAMD21 pin as multiplexed and connect it to a pin using the port multiplexer
-  unsigned int realPort = g_APinDescription[pin].ulPort;
-  unsigned int realPin = g_APinDescription[pin].ulPin;
-  unsigned long int my_PORT_PMUX;
-  if (pin == 4) {
-    my_PORT_PMUX = PORT_PMUX_PMUXO_E;
-  } else if (pin == 5) {
-    my_PORT_PMUX = PORT_PMUX_PMUXO_E;
-  } else if (pin == 6) {
-    my_PORT_PMUX = PORT_PMUX_PMUXE_E;
-  } else if (pin == 7) {
-    my_PORT_PMUX = PORT_PMUX_PMUXE_E;
-  } else if (pin == 8) {
-    my_PORT_PMUX = PORT_PMUX_PMUXE_F;
-  } else if (pin == 13) {
-    my_PORT_PMUX = PORT_PMUX_PMUXO_F;
-  }
-  PORT->Group[realPort].PINCFG[realPin].bit.PMUXEN = 1;
-  PORT->Group[realPort].PMUX[realPin >> 1].reg = my_PORT_PMUX;
-  
+  PORT->Group[pinTable[pin].port].PINCFG[pinTable[pin].samd21Pin].bit.PMUXEN = 1;
+  PORT->Group[pinTable[pin].port].PMUX[pinTable[pin].samd21Pin >> 1].reg = pinTable[pin].pMux;
+
   // Set duty cycle
-  if (pin == 4) {
+  if (pinTable[pin].countRegister == 11) {
     REG_TCC1_CCB1 = (_sts1 * dC) / 1000;
     while (TCC1->SYNCBUSY.bit.CCB1);
-  } else if (pin == 5) {
+  } else if (pinTable[pin].countRegister == 01) {
     REG_TCC0_CCB1 = (_sts0 * dC) / 1000;
     while (TCC0->SYNCBUSY.bit.CCB1);
-  } else if (pin == 6) {
+  } else if (pinTable[pin].countRegister == 00) {
     REG_TCC0_CCB0 = (_sts0 * dC) / 1000;
     while (TCC0->SYNCBUSY.bit.CCB0);
-  } else if (pin == 7) {
+  } else if (pinTable[pin].countRegister == 10) {
     REG_TCC1_CCB0 = (_sts1 * dC) / 1000;
     while (TCC1->SYNCBUSY.bit.CCB0);
-  } else if (pin == 8) {
+  } else if (pinTable[pin].countRegister == 02) {
     REG_TCC0_CCB2 = (_sts0 * dC) / 1000;
     while (TCC0->SYNCBUSY.bit.CCB2);
-  } else if (pin == 13) {
+  } else if (pinTable[pin].countRegister == 03) {
     REG_TCC0_CCB3 = (_sts0 * dC) / 1000;
     while (TCC0->SYNCBUSY.bit.CCB3);
   }
   return pin;
 }
 
-void TurboPWM::enable(int timernumber, bool enabled) {
-  if (timernumber == 0) {
+void TurboPWM::enable(unsigned int timerNumber, bool enabled) {
+  if (timerNumber == 0) {
     _enabled0 = enabled;
     if (_enabled0) {
       REG_TCC0_CTRLA |= TCC_CTRLA_ENABLE;
@@ -188,7 +178,7 @@ void TurboPWM::enable(int timernumber, bool enabled) {
       REG_TCC0_CTRLA &= ~(TCC_CTRLA_ENABLE);
     }
     while (TCC0->SYNCBUSY.bit.ENABLE);
-  } else if (timernumber == 1) {
+  } else if (timerNumber == 1) {
     _enabled1 = enabled;
     if (_enabled1) {
       REG_TCC1_CTRLA |= TCC_CTRLA_ENABLE;
@@ -199,7 +189,7 @@ void TurboPWM::enable(int timernumber, bool enabled) {
   }
 }
 
-float TurboPWM::frequency(int timer) {
+float TurboPWM::frequency(unsigned int timerNumber) {
   float fastDivider;
   float PLL96M;
   if (_turbo) {
@@ -207,14 +197,14 @@ float TurboPWM::frequency(int timer) {
   } else {
     PLL96M = 1.0;
   }
-  if (timer == 0) {
+  if (timerNumber == 0) {
     if (_fastPWM0) {
       fastDivider = 1.0;
     } else {
       fastDivider = 2.0;
     }
     return (static_cast<float>(VARIANT_MCK) / (fastDivider * _GCLKDiv * _TCCDiv0 * _sts0 * PLL96M));
-  } else if (timer == 1) {
+  } else if (timerNumber == 1) {
     if (_fastPWM1) {
       fastDivider = 1.0;
     } else {

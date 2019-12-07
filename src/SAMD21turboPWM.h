@@ -6,25 +6,34 @@ typedef struct {
   unsigned int arduinoPin;
   unsigned int port; 
   unsigned int samd21Pin; 
-  unsigned long int countRegister;
+  unsigned int countRegister;
   unsigned long int pMux;
 } PinLookup;
 
 //This is the pin table for the Arduino Nano 33 IOT
-static const PinLookup pinTable[] = {{ 4, PORTA,  7, REG_TCC1_CCB1, PORT_PMUX_PMUXO_E},
-                                     { 5, PORTA,  5, REG_TCC0_CCB1, PORT_PMUX_PMUXO_E},
-                                     { 6, PORTA,  4, REG_TCC0_CCB0, PORT_PMUX_PMUXE_E},
-                                     { 7, PORTA,  6, REG_TCC1_CCB0, PORT_PMUX_PMUXE_E},
-                                     { 8, PORTA, 18, REG_TCC0_CCB2, PORT_PMUX_PMUXE_F},
-                                     {13, PORTA, 17, REG_TCC0_CCB3, PORT_PMUX_PMUXO_F}};
+static const PinLookup pinTable[] = {{},
+                                     {}, 
+                                     {}, 
+                                     {},
+                                     { 4, PORTA,  7, 11, PORT_PMUX_PMUXO_E},
+                                     { 5, PORTA,  5, 01, PORT_PMUX_PMUXO_E},
+                                     { 6, PORTA,  4, 00, PORT_PMUX_PMUXE_E},
+                                     { 7, PORTA,  6, 10, PORT_PMUX_PMUXE_E},
+                                     { 8, PORTA, 18, 02, PORT_PMUX_PMUXE_F},
+                                     {}, 
+                                     {}, 
+                                     {}, 
+                                     {},
+                                     {13, PORTA, 17, 03, PORT_PMUX_PMUXO_F}};
+static const unsigned int pinTableSize = sizeof(pinTable) / sizeof(pinTable[0]);
 
 class TurboPWM {
   public:
     void setClockDivider(unsigned int GCLKDiv, bool turbo);
     int timer(int timernumber, unsigned int TCCDiv, unsigned long int sts, bool fastPWM);
     int analogWrite(unsigned int pin, unsigned int dC);
-    void enable(int timernumber, bool enabled);
-    float frequency(int timer);
+    void enable(unsigned int timerNumber, bool enabled);
+    float frequency(unsigned int timerNumber);
   private:
     unsigned int _GCLKDiv = 1;        // Main clock divider: 1 to 255 for both TCC0 and TCC1
     unsigned int _TCCDiv0 = 1;        // TTC0 clock divider: 1, 2, 4, 8, 16, 64, 256, or 1024
