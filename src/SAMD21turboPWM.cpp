@@ -147,24 +147,26 @@ int TurboPWM::analogWrite(unsigned int pin, unsigned int dC) {
   PORT->Group[pinTable[pin].port].PMUX[pinTable[pin].samd21Pin >> 1].reg = pinTable[pin].pMux;
 
   // Set duty cycle
-  if (pinTable[pin].countRegister == 11) {
-    REG_TCC1_CCB1 = (_sts1 * dC) / 1000;
-    while (TCC1->SYNCBUSY.bit.CCB1);
-  } else if (pinTable[pin].countRegister == 01) {
-    REG_TCC0_CCB1 = (_sts0 * dC) / 1000;
-    while (TCC0->SYNCBUSY.bit.CCB1);
-  } else if (pinTable[pin].countRegister == 00) {
+  if (pinTable[pin].countRegister == 0x00) {
     REG_TCC0_CCB0 = (_sts0 * dC) / 1000;
     while (TCC0->SYNCBUSY.bit.CCB0);
-  } else if (pinTable[pin].countRegister == 10) {
-    REG_TCC1_CCB0 = (_sts1 * dC) / 1000;
-    while (TCC1->SYNCBUSY.bit.CCB0);
-  } else if (pinTable[pin].countRegister == 02) {
+  } else if (pinTable[pin].countRegister == 0x01) {
+    REG_TCC0_CCB1 = (_sts0 * dC) / 1000;
+    while (TCC0->SYNCBUSY.bit.CCB1);
+  } else if (pinTable[pin].countRegister == 0x02) {
     REG_TCC0_CCB2 = (_sts0 * dC) / 1000;
     while (TCC0->SYNCBUSY.bit.CCB2);
-  } else if (pinTable[pin].countRegister == 03) {
+  } else if (pinTable[pin].countRegister == 0x03) {
     REG_TCC0_CCB3 = (_sts0 * dC) / 1000;
     while (TCC0->SYNCBUSY.bit.CCB3);
+  } else if (pinTable[pin].countRegister == 0x10) {
+    REG_TCC1_CCB0 = (_sts1 * dC) / 1000;
+    while (TCC1->SYNCBUSY.bit.CCB0);
+  } else  if (pinTable[pin].countRegister == 0x11) {
+    REG_TCC1_CCB1 = (_sts1 * dC) / 1000;
+    while (TCC1->SYNCBUSY.bit.CCB1);
+  } else {
+    return 0;
   }
   return pin;
 }

@@ -2,31 +2,6 @@
 #define GCLK_GENCTRL_SRC_DPLL96M_Val 0x8ul
 #define GCLK_GENCTRL_SRC_DPLL96M (GCLK_GENCTRL_SRC_DPLL96M_Val << GCLK_GENCTRL_SRC_Pos)
 
-typedef struct { 
-  unsigned int arduinoPin;
-  unsigned int port; 
-  unsigned int samd21Pin; 
-  unsigned int countRegister;
-  unsigned long int pMux;
-} PinLookup;
-
-//This is the pin table for the Arduino Nano 33 IOT
-static const PinLookup pinTable[] = {{},
-                                     {}, 
-                                     {}, 
-                                     {},
-                                     { 4, PORTA,  7, 11, PORT_PMUX_PMUXO_E},
-                                     { 5, PORTA,  5, 01, PORT_PMUX_PMUXO_E},
-                                     { 6, PORTA,  4, 00, PORT_PMUX_PMUXE_E},
-                                     { 7, PORTA,  6, 10, PORT_PMUX_PMUXE_E},
-                                     { 8, PORTA, 18, 02, PORT_PMUX_PMUXE_F},
-                                     {}, 
-                                     {}, 
-                                     {}, 
-                                     {},
-                                     {13, PORTA, 17, 03, PORT_PMUX_PMUXO_F}};
-static const unsigned int pinTableSize = sizeof(pinTable) / sizeof(pinTable[0]);
-
 class TurboPWM {
   public:
     void setClockDivider(unsigned int GCLKDiv, bool turbo);
@@ -46,3 +21,43 @@ class TurboPWM {
     bool _enabled1 = true;            // Shows if TCC1 is enabled
     bool _turbo = false;
 };
+
+typedef struct { 
+  int arduinoPin;
+  unsigned int port; 
+  unsigned int samd21Pin; 
+  unsigned int countRegister;
+  unsigned long int pMux;
+} PinLookup;
+
+#if defined(ARDUINO_SAMD_NANO_33_IOT)
+static const PinLookup pinTable[] = {  // This is the pin table for the Arduino Nano 33 IOT
+{-1},
+{-1}, 
+{-1}, 
+{-1},
+{ 4, PORTA,  7, 0x11, PORT_PMUX_PMUXO_E},
+{ 5, PORTA,  5, 0x01, PORT_PMUX_PMUXO_E},
+{ 6, PORTA,  4, 0x00, PORT_PMUX_PMUXE_E},
+{ 7, PORTA,  6, 0x10, PORT_PMUX_PMUXE_E},
+{ 8, PORTA, 18, 0x02, PORT_PMUX_PMUXE_F},
+{-1}, 
+{-1}, 
+{-1}, 
+{-1},
+{13, PORTA, 17, 0x03, PORT_PMUX_PMUXO_F}};
+
+#elif defined(ARDUINO_SAMD_MKR1010)
+static const PinLookup pinTable[] = {  // This is the pin table for the Arduino MKR WiFi 1010
+{-1},
+{-1}, 
+{ 2, PORTA, 10, 0x10, PORT_PMUX_PMUXE_E}, 
+{ 3, PORTA, 11, 0x11, PORT_PMUX_PMUXO_E},
+{ 4, PORTB, 10, 0x00, PORT_PMUX_PMUXE_F},
+{ 5, PORTB, 11, 0x01, PORT_PMUX_PMUXO_F},
+{ 6, PORTA, 20, 0x02, PORT_PMUX_PMUXE_F},
+{ 7, PORTA, 21, 0x03, PORT_PMUX_PMUXO_F}};
+
+#endif
+
+static const unsigned int pinTableSize = sizeof(pinTable) / sizeof(pinTable[0]);
