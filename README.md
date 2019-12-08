@@ -1,4 +1,4 @@
-*Note: still under development. Seems to work fine, though*
+*Note: Still under development. Seems to work fine, though.*
 
 ## A first attempt at a fast PWM library for SAMD21G-based Arduinos
 
