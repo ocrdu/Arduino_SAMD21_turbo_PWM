@@ -1,4 +1,4 @@
-*Note: still under development. Only works for Arduino Nano 33 IoT for now.*
+*Note: still under development. Seems to work fine, though*
 
 ## A first attempt at a fast PWM library for SAMD21G-based Arduinos
 
@@ -27,7 +27,7 @@ For the Arduino MKR WiFi 1010 (untested), you need to initialise timer 1 for pin
 
 Start PWM on a pin with a duty cycle:
 
-```pwm.analogWrite([4, 5, 6, 7, 8, 13], [0-1000]);```
+```pwm.analogWrite([pin number], [0-1000]);```
 
 Also see the header file and the examples.
 
