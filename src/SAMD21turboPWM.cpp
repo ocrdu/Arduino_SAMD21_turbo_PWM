@@ -13,12 +13,12 @@ void TurboPWM::setClockDivider(unsigned int GCLKDiv, bool turbo) {
   _turbo = turbo;
   
   if (_turbo) {
-    // Configure generic clock generator 5
+    // Configure generic clock generator 5 to use DFLL48M
     GCLK->GENCTRL.reg = GCLK_GENCTRL_IDC | GCLK_GENCTRL_GENEN | GCLK_GENCTRL_SRC_DFLL48M | GCLK_GENCTRL_ID(5);
     while (GCLK->STATUS.bit.SYNCBUSY);
  
-    // Set clock divider of 48 to generic clock generator 5 (1 MHz)
-    GCLK->GENDIV.reg = GCLK_GENDIV_DIV(48) | GCLK_GENDIV_ID(4);
+    // Set GCLK5's prescaler to 48 (1 MHz)
+    GCLK->GENDIV.reg = GCLK_GENDIV_DIV(48) | GCLK_GENDIV_ID(5);
     while (GCLK->STATUS.bit.SYNCBUSY);
  
     // Enable GCLK5 and connect it to GCLK_DPLL
@@ -34,12 +34,13 @@ void TurboPWM::setClockDivider(unsigned int GCLKDiv, bool turbo) {
     // Enable DPLL
     SYSCTRL->DPLLCTRLA.reg |= SYSCTRL_DPLLCTRLA_ENABLE;
   
-    // Configure generic clock generator 4
+    // Configure generic clock generator 4 to use DPLL96M
     GCLK->GENCTRL.reg = GCLK_GENCTRL_IDC | GCLK_GENCTRL_GENEN | GCLK_GENCTRL_SRC_DPLL96M | GCLK_GENCTRL_ID(4);
     while (GCLK->STATUS.bit.SYNCBUSY);
     _turbo = true;
  
   } else {
+    // Configure generic clock generator 4 to use DFLL48M
     REG_GCLK_GENCTRL = GCLK_GENCTRL_IDC | GCLK_GENCTRL_GENEN | GCLK_GENCTRL_SRC_DFLL48M | GCLK_GENCTRL_ID(4);
     while (GCLK->STATUS.bit.SYNCBUSY);
     _turbo = false;
