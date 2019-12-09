@@ -169,7 +169,7 @@ int TurboPWM::analogWrite(unsigned int pin, unsigned int dC) {
   } else {
     return 0;
   }
-  return pin;
+  return 1;
 }
 
 void TurboPWM::enable(unsigned int timerNumber, bool enabled) {

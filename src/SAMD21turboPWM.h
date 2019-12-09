@@ -19,7 +19,7 @@ class TurboPWM {
     bool _fastPWM1 = false;            // False for phase-correct aka dual-slope PWM, true for fast aka normal aka single-slope PWM
     bool _enabled0 = true;             // Shows if TCC0 is enabled
     bool _enabled1 = true;             // Shows if TCC1 is enabled
-    bool _turbo = false;
+    bool _turbo = false;               // False for 48MHz clock, true for 96MHz clock
 };
 
 typedef struct { 
@@ -31,7 +31,8 @@ typedef struct {
 } PinLookup;
 
 static const PinLookup pinTable[] = {
-#if defined(ARDUINO_SAMD_NANO_33_IOT)  // This is the pin table for the Arduino Nano 33 IOT
+#if defined (ARDUINO_SAMD_NANO_33_IOT)
+//Table begin
 {-1},
 {-1}, 
 {-1}, 
@@ -46,8 +47,19 @@ static const PinLookup pinTable[] = {
 {-1}, 
 {-1},
 {13, PORTA, 17, 0x03, PORT_PMUX_PMUXO_F}
+//Table end
 
-#elif defined(ARDUINO_SAMD_MKR1010)    // This is the pin table for the Arduino MKR WiFi 1010
+#elif defined (ARDUINO_SAMD_ZERO) ||
+      defined (ARDUINO_SAMD_MKRZERO) ||
+      defined (ARDUINO_SAMD_MKR1000) || 
+      defined (ARDUINO_SAMD_MKR1010) ||
+      defined (ARDUINO_SAMD_MKRFox1200) ||
+      defined (ARDUINO_SAMD_MKRWAN1300) ||
+      defined (ARDUINO_SAMD_MKRWAN1310) ||
+      defined (ARDUINO_SAMD_MKRGSM1400) ||
+      defined (ARDUINO_SAMD_MKRNB1500) ||
+      defined (ARDUINO_SAMD_MKRVIDOR4000)
+//Table begin
 {-1},
 {-1}, 
 { 2, PORTA, 10, 0x10, PORT_PMUX_PMUXE_E}, 
@@ -56,7 +68,10 @@ static const PinLookup pinTable[] = {
 { 5, PORTB, 11, 0x01, PORT_PMUX_PMUXO_F},
 { 6, PORTA, 20, 0x02, PORT_PMUX_PMUXE_F},
 { 7, PORTA, 21, 0x03, PORT_PMUX_PMUXO_F}
+//Table end
 
+#else
+  #error Board not supported by Turbo PWM Library
 #endif
 };
 

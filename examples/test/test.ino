@@ -5,8 +5,8 @@
 #include <SAMD21turboPWM.h>
 
 TurboPWM pwm;
-const int statusLED = 13;
-const int otherLED = 7;
+const int statusLED = 13; // Note: These pin definitions are for the Arduino Nano 33 IoT;
+const int otherLED = 7;   //       change them for other boards
 
 void setup() {
   pwm.setClockDivider(1, true);     // Input clock is divided by 1 and sent to Generic Clock, Turbo is On
