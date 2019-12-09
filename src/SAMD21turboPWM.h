@@ -49,15 +49,15 @@ static const PinLookup pinTable[] = {
 {13, PORTA, 17, 0x03, PORT_PMUX_PMUXO_F}
 //Table end
 
-#elif defined (ARDUINO_SAMD_ZERO) ||
-      defined (ARDUINO_SAMD_MKRZERO) ||
-      defined (ARDUINO_SAMD_MKR1000) || 
-      defined (ARDUINO_SAMD_MKR1010) ||
-      defined (ARDUINO_SAMD_MKRFox1200) ||
-      defined (ARDUINO_SAMD_MKRWAN1300) ||
-      defined (ARDUINO_SAMD_MKRWAN1310) ||
-      defined (ARDUINO_SAMD_MKRGSM1400) ||
-      defined (ARDUINO_SAMD_MKRNB1500) ||
+#elif defined (ARDUINO_SAMD_ZERO) || \
+      defined (ARDUINO_SAMD_MKRZERO) || \
+      defined (ARDUINO_SAMD_MKR1000) || \
+      defined (ARDUINO_SAMD_MKR1010) || \
+      defined (ARDUINO_SAMD_MKRFox1200) || \
+      defined (ARDUINO_SAMD_MKRWAN1300) || \
+      defined (ARDUINO_SAMD_MKRWAN1310) || \
+      defined (ARDUINO_SAMD_MKRGSM1400) || \
+      defined (ARDUINO_SAMD_MKRNB1500) || \
       defined (ARDUINO_SAMD_MKRVIDOR4000)
 //Table begin
 {-1},
