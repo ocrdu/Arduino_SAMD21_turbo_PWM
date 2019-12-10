@@ -214,5 +214,7 @@ float TurboPWM::frequency(unsigned int timerNumber) {
       fastDivider = 2.0;
     }
     return (static_cast<float>(VARIANT_MCK) / (fastDivider * _GCLKDiv * _TCCDiv1 * _sts1 * PLL96M));
+  } else {
+    return 0;
   }
 }
