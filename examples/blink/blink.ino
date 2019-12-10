@@ -1,5 +1,3 @@
-// Uses the built-in LED.
-
 // Note: Uses pin 13 as the LED pin; may need changing for other boards
 
 #include <SAMD21turboPWM.h>
