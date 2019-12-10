@@ -2,7 +2,7 @@
 
 ## A fast PWM library for SAMD21G-based Arduinos
 
-Uses the SAMD21's timers TCC0 and TCC1 to generate a PWM signal on six pins; 2, 3, 4, 5, 6, and 7 on the MKR series, and 4, 5, 6, 7, 8, and 13 on the Nano 33 IoT.
+Uses the SAMD21's timers TCC0 and TCC1 to generate a PWM signal on six pins: 2, 3, 4, 5, 6, and 7 on the MKR series, and 4, 5, 6, 7, 8, and 13 on the Nano 33 IoT.
 
 ### Usage:
 
