@@ -42,3 +42,7 @@ Get a timer's current PWM frequency:
 Also see the header file and the examples.
 
 *All help, input, and testing is welcome.*
+
+### Thanks go to ...
+
+... Martin L. and Shawn Hymel for important parts of the code, and for explaining esoteric and dark stuff.
