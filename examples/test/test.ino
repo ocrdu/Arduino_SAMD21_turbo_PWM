@@ -1,4 +1,5 @@
-// Uses the built-in LED and an extra LED on pin 7. Make sure you don't pull more than 7mA from any pin.
+// Uses a status LED on pin 13 and an extra LED on pin 7; may need changing for other boards.
+// Make sure you don't pull more than 7mA from any pin.
 
 // Program will start when Serial Monitor is opened.
 
