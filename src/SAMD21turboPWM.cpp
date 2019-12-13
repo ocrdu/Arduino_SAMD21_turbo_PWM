@@ -145,8 +145,8 @@ int TurboPWM::analogWrite(unsigned int pin, unsigned int dC) {
 
   // Enable a SAMD21 pin as multiplexed and connect it to a pin using the port multiplexer
   PORT->Group[pinTable[pin].port].PINCFG[pinTable[pin].samd21Pin].bit.PMUXEN = 1;
-  PORT->Group[pinTable[pin].port].PMUX[pinTable[pin].samd21Pin >> 1].reg = pinTable[pin].pMux;
-
+  PORT->Group[pinTable[pin].port].PMUX[pinTable[pin].samd21Pin >> 1].reg |= pinTable[pin].pMux;
+  
   // Set duty cycle
   if (pinTable[pin].countRegister == 0x00) {
     REG_TCC0_CCB0 = (_sts0 * dC) / 1000;
