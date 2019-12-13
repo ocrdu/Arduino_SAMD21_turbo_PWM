@@ -20,10 +20,10 @@ void setServo(const int pin, int microSeconds) {
 }
 
 void setup() {
-  //Set timers 1 and 2 to 50Hz PWM with a resolution of 20000 
-  servo.setClockDivider(6, false);  // Input clock is divided by 6 and 8MHz is sent to Generic Clock, Turbo is off
-  servo.timer(0, 4, 20000, false);  // Timer 0 is set to Generic Clock divided by 4, resolution is 20000, phase-correct aka dual-slope PWM
-  servo.timer(1, 4, 20000, false);  // Timer 1 is set to Generic Clock divided by 4, resolution is 20000, phase-correct aka dual-slope PWM
+  //Set timers 1 and 2 to 50Hz PWM with a resolution of 480000 
+  servo.setClockDivider(1, false);   // Input clock is divided by 1 and 48MHz is sent to Generic Clock, Turbo is off
+  servo.timer(0, 1, 480000, false);  // Timer 0 is set to Generic Clock divided by 1, resolution is 480000, phase-correct aka dual-slope PWM
+  servo.timer(1, 1, 480000, false);  // Timer 1 is set to Generic Clock divided by 1, resolution is 480000, phase-correct aka dual-slope PWM
 
   Serial.begin(115200);
   while(!Serial);
