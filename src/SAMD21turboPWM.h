@@ -6,22 +6,31 @@ class TurboPWM {
   public:
     void setClockDivider(unsigned int GCLKDiv, bool turbo);
     int timer(int timernumber, unsigned int TCCDiv, unsigned long int sts, bool fastPWM);
-    int analogWrite(unsigned int pin, unsigned int dC);
+    int analogWrite(unsigned int pin, unsigned int dutyCycle);  //Duty cycle will be (dutyCycle / _maxDutyCycle) * 100%
     void enable(unsigned int timerNumber, bool enabled);
     float frequency(unsigned int timerNumber);
   private:
-    unsigned int _GCLKDiv = 1;         // Main clock divider: 1 to 255 for both TCC0 and TCC1
-    unsigned int _TCCDiv0 = 1;         // TTC0 clock divider: 1, 2, 4, 8, 16, 64, 256, or 1024
-    unsigned int _TCCDiv1 = 1;         // TTC1 clock divider: 1, 2, 4, 8, 16, 64, 256, or 1024
-    unsigned long int _sts0 = 500000;  // Timer 0 PWM steps (resolution): 2 to 0xFFFFFF (24 bits)
-    unsigned long int _sts1 = 500000;  // Timer 1 PWM steps (resolution): 2 to 0xFFFFFF (24 bits)
-    bool _fastPWM0 = false;            // False for phase-correct aka dual-slope PWM, true for fast aka normal aka single-slope PWM
-    bool _fastPWM1 = false;            // False for phase-correct aka dual-slope PWM, true for fast aka normal aka single-slope PWM
-    bool _enabled0 = true;             // Shows if TCC0 is enabled
-    bool _enabled1 = true;             // Shows if TCC1 is enabled
-    bool _turbo = false;               // False for 48MHz clock, true for 96MHz clock
+    unsigned int _GCLKDiv = 1;                // Main clock divider: 1 to 255 for both TCC0 and TCC1
+    bool _turbo = false;                      // False for 48MHz clock, true for 96MHz clock
+    unsigned const int _maxDutyCycle = 1000;  // The maximum duty cycle number; duty cycle will be (dutyCycle / _maxDutyCycle) * 100%
 };
 
+//Table for looking up and storing values for TCCx
+typedef struct {
+  const unsigned int counterSize;  // 24 bits for TCC0 and TCC1, so 0xFFFFFF
+  unsigned int TCCDiv;             // TTCx clock divider: 1, 2, 4, 8, 16, 64, 256, or 1024
+  unsigned long int sts;           // PWM steps (resolution): 2 to counterSize
+  bool fastPWM;                    // False for phase-correct aka dual-slope PWM, true for fast aka normal aka single-slope PWM
+  bool enabled;                    // Shows if TCCx should be enabled
+} TimerLookup;
+
+static TimerLookup timerTable[] = {
+  {0xFFFFFF, 1, 500000, false, true},
+  {0xFFFFFF, 1, 500000, false, true}
+};
+static const unsigned int timerTableSize = sizeof(timerTable) / sizeof(timerTable[0]);
+
+// Tables for looking up pin mappings etc. for different boards
 typedef struct { 
   int arduinoPin;
   unsigned int port; 
@@ -74,5 +83,4 @@ static const PinLookup pinTable[] = {
   #error Board not supported by Turbo PWM Library
 #endif
 };
-
 static const unsigned int pinTableSize = sizeof(pinTable) / sizeof(pinTable[0]);

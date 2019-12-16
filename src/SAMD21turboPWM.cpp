@@ -55,7 +55,12 @@ void TurboPWM::setClockDivider(unsigned int GCLKDiv, bool turbo) {
   while (GCLK->STATUS.bit.SYNCBUSY);
 }
 
-int TurboPWM::timer(int timernumber, unsigned int TCCDiv, unsigned long int sts, bool fastPWM) {
+int TurboPWM::timer(int timerNumber, unsigned int TCCDiv, unsigned long int sts, bool fastPWM) {
+  // Check for available timer numbers
+  if (timerNumber >= timerTableSize) {
+    return 0;
+  }
+  
   // Derive TCC prescaler from parameter TCCDiv; default to 4
   unsigned int my_TCC_CTRLA_PRESCALER_DIV;
   if (TCCDiv == 1) {
@@ -75,57 +80,50 @@ int TurboPWM::timer(int timernumber, unsigned int TCCDiv, unsigned long int sts,
   } else if (TCCDiv == 1024) {
     my_TCC_CTRLA_PRESCALER_DIV = TCC_CTRLA_PRESCALER_DIV1024_Val << TCC_CTRLA_PRESCALER_Pos;
   } else {
-    my_TCC_CTRLA_PRESCALER_DIV = TCC_CTRLA_PRESCALER_DIV4_Val << TCC_CTRLA_PRESCALER_Pos;
-    TCCDiv = 4;
+    my_TCC_CTRLA_PRESCALER_DIV = TCC_CTRLA_PRESCALER_DIV1_Val << TCC_CTRLA_PRESCALER_Pos;
+    TCCDiv = timerTable[timerNumber].TCCDiv;
   }
 
-  // Limit resolution to 24 bits
+  // Limit resolution to TCCx's counter size
   if (sts < 2) {
     sts = 2;
   }
-  if (sts > 0xFFFFFF) {
-    sts = 0xFFFFFF;
+  if (sts > timerTable[timerNumber].counterSize) {
+    sts = timerTable[timerNumber].counterSize;
   }
   
   // Set prescaler TCCDiv for TCCx, select single or dual slope PWM, and set the resolution
-  if (timernumber == 0) {
-    _TCCDiv0 = TCCDiv;
-    _sts0 = sts;
-    _fastPWM0 = fastPWM;
+  timerTable[timerNumber].TCCDiv = TCCDiv;
+  timerTable[timerNumber].sts = sts;
+  timerTable[timerNumber].fastPWM = fastPWM;
+  if (timerNumber == 0) {
     REG_TCC0_CTRLA |= my_TCC_CTRLA_PRESCALER_DIV;
-    if (_fastPWM0) {
+    if (timerTable[timerNumber].fastPWM) {
       REG_TCC0_WAVE |= TCC_WAVE_WAVEGEN_NPWM;
-    } else if (!_fastPWM0) {
+    } else if (!timerTable[timerNumber].fastPWM) {
       REG_TCC0_WAVE |= TCC_WAVE_POL(0xF) | TCC_WAVE_WAVEGEN_DSBOTTOM;
     }
     while (TCC0->SYNCBUSY.bit.WAVE);
-    REG_TCC0_PERB = _sts0;
+    REG_TCC0_PERB = timerTable[timerNumber].sts;
     while (TCC0->SYNCBUSY.bit.PERB);
-    enable(timernumber, _enabled0);
-    return 1;
-  } else if (timernumber == 1) {
-    _TCCDiv1 = TCCDiv;
-    _sts1 = sts;
-    _fastPWM1 = fastPWM;
+  } else if (timerNumber == 1) {
     REG_TCC1_CTRLA |= my_TCC_CTRLA_PRESCALER_DIV;
-    if (_fastPWM1) {
+    if (timerTable[timerNumber].fastPWM) {
       REG_TCC1_WAVE |= TCC_WAVE_WAVEGEN_NPWM;
-    } else if (!_fastPWM1) {
+    } else if (!timerTable[timerNumber].fastPWM) {
       REG_TCC1_WAVE |= TCC_WAVE_POL(0xF) | TCC_WAVE_WAVEGEN_DSBOTTOM;
     }
     while (TCC1->SYNCBUSY.bit.WAVE);
-    REG_TCC1_PERB = _sts1;
+    REG_TCC1_PERB = timerTable[timerNumber].sts;
     while (TCC1->SYNCBUSY.bit.PERB);
-    enable(timernumber, _enabled1);
-    return 1;
-  } else {
-    return 0;
   }
+  enable(timerNumber, timerTable[timerNumber].enabled);
+  return 1;
 }
 
-int TurboPWM::analogWrite(unsigned int pin, unsigned int dC) {
+int TurboPWM::analogWrite(unsigned int pin, unsigned int dutyCycle) {
   // Check if an acceptable pin is used
-  int i;
+  unsigned int i;
   for (i = 0; i < pinTableSize; i++) {
     if (pinTable[i].arduinoPin == pin) {
       break;
@@ -135,12 +133,12 @@ int TurboPWM::analogWrite(unsigned int pin, unsigned int dC) {
     return 0;
   }
 
-  // limit dutycycle to 0-1000
-  if (dC < 0) {
-    dC = 0;
+  // limit dutycycle to the maximum duty cycle set in the header file; duty cycle will be (dutyCycle / _maxDutyCycle) * 100%
+  if (dutyCycle < 0) {
+    dutyCycle = 0;
   }
-  if (dC > 1000) {
-    dC = 1000;
+  if (dutyCycle > _maxDutyCycle) {
+    dutyCycle = _maxDutyCycle;
   }
 
   // Enable a SAMD21 pin as multiplexed and connect it to a pin using the port multiplexer
@@ -149,22 +147,22 @@ int TurboPWM::analogWrite(unsigned int pin, unsigned int dC) {
   
   // Set duty cycle
   if (pinTable[pin].countRegister == 0x00) {
-    REG_TCC0_CCB0 = (_sts0 * dC) / 1000;
+    REG_TCC0_CCB0 = (timerTable[0].sts * dutyCycle) / _maxDutyCycle;
     while (TCC0->SYNCBUSY.bit.CCB0);
   } else if (pinTable[pin].countRegister == 0x01) {
-    REG_TCC0_CCB1 = (_sts0 * dC) / 1000;
+    REG_TCC0_CCB1 = (timerTable[0].sts * dutyCycle) / _maxDutyCycle;
     while (TCC0->SYNCBUSY.bit.CCB1);
   } else if (pinTable[pin].countRegister == 0x02) {
-    REG_TCC0_CCB2 = (_sts0 * dC) / 1000;
+    REG_TCC0_CCB2 = (timerTable[0].sts * dutyCycle) / _maxDutyCycle;
     while (TCC0->SYNCBUSY.bit.CCB2);
   } else if (pinTable[pin].countRegister == 0x03) {
-    REG_TCC0_CCB3 = (_sts0 * dC) / 1000;
+    REG_TCC0_CCB3 = (timerTable[0].sts * dutyCycle) / _maxDutyCycle;
     while (TCC0->SYNCBUSY.bit.CCB3);
   } else if (pinTable[pin].countRegister == 0x10) {
-    REG_TCC1_CCB0 = (_sts1 * dC) / 1000;
+    REG_TCC1_CCB0 = (timerTable[1].sts * dutyCycle) / _maxDutyCycle;
     while (TCC1->SYNCBUSY.bit.CCB0);
   } else  if (pinTable[pin].countRegister == 0x11) {
-    REG_TCC1_CCB1 = (_sts1 * dC) / 1000;
+    REG_TCC1_CCB1 = (timerTable[1].sts * dutyCycle) / _maxDutyCycle;
     while (TCC1->SYNCBUSY.bit.CCB1);
   } else {
     return 0;
@@ -173,17 +171,16 @@ int TurboPWM::analogWrite(unsigned int pin, unsigned int dC) {
 }
 
 void TurboPWM::enable(unsigned int timerNumber, bool enabled) {
+  timerTable[timerNumber].enabled = enabled;
   if (timerNumber == 0) {
-    _enabled0 = enabled;
-    if (_enabled0) {
+    if (timerTable[timerNumber].enabled) {
       REG_TCC0_CTRLA |= TCC_CTRLA_ENABLE;
     } else {
       REG_TCC0_CTRLA &= ~(TCC_CTRLA_ENABLE);
     }
     while (TCC0->SYNCBUSY.bit.ENABLE);
   } else if (timerNumber == 1) {
-    _enabled1 = enabled;
-    if (_enabled1) {
+    if (timerTable[timerNumber].enabled) {
       REG_TCC1_CTRLA |= TCC_CTRLA_ENABLE;
     } else {
       REG_TCC1_CTRLA &= ~(TCC_CTRLA_ENABLE);
@@ -193,28 +190,20 @@ void TurboPWM::enable(unsigned int timerNumber, bool enabled) {
 }
 
 float TurboPWM::frequency(unsigned int timerNumber) {
-  float fastDivider;
-  float PLL96M;
-  if (_turbo) {
-    PLL96M = 0.5;
-  } else {
-    PLL96M = 1.0;
-  }
-  if (timerNumber == 0) {
-    if (_fastPWM0) {
-      fastDivider = 1.0;
-    } else {
-      fastDivider = 2.0;
-    }
-    return (static_cast<float>(VARIANT_MCK) / (fastDivider * _GCLKDiv * _TCCDiv0 * _sts0 * PLL96M));
-  } else if (timerNumber == 1) {
-    if (_fastPWM1) {
-      fastDivider = 1.0;
-    } else {
-      fastDivider = 2.0;
-    }
-    return (static_cast<float>(VARIANT_MCK) / (fastDivider * _GCLKDiv * _TCCDiv1 * _sts1 * PLL96M));
-  } else {
+  if (timerNumber >= timerTableSize) {
     return 0;
   }
+  unsigned int fastDivider;
+  unsigned int PLL96M;
+  if (_turbo) {
+    PLL96M = 2;
+  } else {
+    PLL96M = 1;
+  }
+  if (timerTable[timerNumber].fastPWM) {
+    fastDivider = 1;
+  } else {
+    fastDivider = 2;
+  }
+  return (static_cast<float>(VARIANT_MCK) * PLL96M) / (fastDivider * _GCLKDiv * timerTable[timerNumber].TCCDiv * timerTable[timerNumber].sts);
 }
