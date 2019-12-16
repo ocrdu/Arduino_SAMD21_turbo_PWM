@@ -61,7 +61,7 @@ int TurboPWM::timer(int timerNumber, unsigned int TCCDiv, unsigned long int sts,
     return 0;
   }
   
-  // Derive TCC prescaler from parameter TCCDiv; default to 4
+  // Derive TCC prescaler from parameter TCCDiv; default to last known setting
   unsigned int my_TCC_CTRLA_PRESCALER_DIV;
   if (TCCDiv == 1) {
     my_TCC_CTRLA_PRESCALER_DIV = TCC_CTRLA_PRESCALER_DIV1_Val << TCC_CTRLA_PRESCALER_Pos;
