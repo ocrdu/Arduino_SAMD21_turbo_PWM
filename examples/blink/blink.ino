@@ -5,8 +5,8 @@
 TurboPWM pwm;
 
 void setup() {
-  pwm.setClockDivider(1, false);
-  pwm.timer(0, 16, 6000000, true);
+  pwm.setClockDivider(4, false);
+  pwm.timer(0, 1, 12000000, true);
   pwm.analogWrite(13, 500);
 }
 

@@ -18,11 +18,11 @@ class TurboPWM {
 
 //Table for looking up and storing values for TCCx
 typedef struct {
-  const unsigned int counterSize;  // 24 bits for TCC0 and TCC1, so 0xFFFFFF
-  unsigned int TCCDiv;             // TTCx clock divider: 1, 2, 4, 8, 16, 64, 256, or 1024
-  unsigned long int sts;           // PWM steps (resolution): 2 to counterSize
-  bool fastPWM;                    // False for phase-correct aka dual-slope PWM, true for fast aka normal aka single-slope PWM
-  bool enabled;                    // Shows if TCCx should be enabled
+  const unsigned long int counterSize;  // 24 bits for TCC0 and TCC1, so 0xFFFFFF
+  unsigned int TCCDiv;                  // TTCx clock divider: 1, 2, 4, 8, 16, 64, 256, or 1024
+  unsigned long long int sts;           // PWM steps (resolution): 2 to counterSize
+  bool fastPWM;                         // False for phase-correct aka dual-slope PWM, true for fast aka normal aka single-slope PWM
+  bool enabled;                         // Shows if TCCx should be enabled
 } TimerLookup;
 
 static TimerLookup timerTable[] = {
