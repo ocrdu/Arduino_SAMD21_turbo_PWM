@@ -84,3 +84,39 @@ Picked pins for TCC1: D2:PA10:TCC1/WO0:E, D3:PA11:TCC1/WO1:E
 Picked pins for TCC2: 
 
 ------------------------------------------------------------------------------------------------------
+
+Arduino Zero:
+
+Pin Translation Table:
+TCC0 pins:                         TCC1 pins:           TCC2 pins:
+PA04: A3                           PA06: D8/EDBG_GPIO2  PA00: XIN32
+PA05: A4                           PA07: D9/EDBG_GPIO3  PA01: XOUT32
+PA08: D4                           PA08: D4             PA12: SPI1/MISO
+PA09: D3                           PA09: D3             PA13: EDBG_GPIO0
+PA10: D1/TX                        PA10: D1/TX          PA16: D11
+PA11: D0/RX                        PA11: D0/RX          PA17: D13 (LED)
+PA12: SPI1/MISO                    PA24: USB_NEGATIVE
+PA13: EDBG_GPIO0                   PA25: USB_POSITIVE
+PA14: D2                           PA30: SWCLK
+PA15: D5                           PA31: SWDIO
+PA16: D11
+PA17: D13 (LED)
+PA18: D10/EDBG_SS
+PA19: D12/EDBG_MISO
+PA20: D6
+PA21: D7
+PA22: SDA
+PA23: SCL
+PB10: SPI4/MOSI
+PB11: SPI3/SCK
+
+Useable pins for TCC0 on Arduino Zero: D0, D1, D2, D3, D4, D5, D6, D7, D10, D11, D12, D13, A3, A4
+Useable pins for TCC1 on Arduino Zero: D0, D1, D3, D4, D8, D9
+Useable pins for TCC2 on Arduino Zero: D11, D13
+
+(Arduino Pin:SAMD21 Pin:TCCx/output channel:PMUXoddeven_x)
+Picked pins for TCC0:
+Picked pins for TCC1: 
+Picked pins for TCC2: 
+
+------------------------------------------------------------------------------------------------------
