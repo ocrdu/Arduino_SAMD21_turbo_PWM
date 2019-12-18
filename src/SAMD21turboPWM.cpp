@@ -50,7 +50,7 @@ void TurboPWM::setClockDivider(unsigned int GCLKDiv, bool turbo) {
   REG_GCLK_GENDIV = GCLK_GENDIV_DIV(_GCLKDiv) | GCLK_GENDIV_ID(4);
   while (GCLK->STATUS.bit.SYNCBUSY);
 
-  // Connect GCLCK4 to TCC0 and TCC1
+  // Connect GCLK4 to TCC0 and TCC1
   REG_GCLK_CLKCTRL = GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK4 | GCLK_CLKCTRL_ID_TCC0_TCC1;
   while (GCLK->STATUS.bit.SYNCBUSY);
 }
