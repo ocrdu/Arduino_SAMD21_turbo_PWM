@@ -13,7 +13,7 @@ class TurboPWM {
   private:
     unsigned int _GCLKDiv = 1;                // Main clock divider: 1 to 255 for both TCC0 and TCC1
     bool _turbo = false;                      // False for 48MHz clock, true for 96MHz clock
-    unsigned const int _maxDutyCycle = 1000;  // The maximum duty cycle number; duty cycle will be (dutyCycle / _maxDutyCycle) * 100%
+    const unsigned int _maxDutyCycle = 1000;  // The maximum duty cycle number; duty cycle will be (dutyCycle / _maxDutyCycle) * 100%
 };
 
 //Table for looking up and storing values for TCCx
