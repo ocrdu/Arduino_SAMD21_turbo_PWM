@@ -43,9 +43,9 @@ Useable pins for TCC1 on Arduino Nano 33 IoT: D4, D7, A2, A3, A6
 Useable pins for TCC2 on Arduino Nano 33 IoT: D11, D13
 
 (Arduino Pin:SAMD21 Pin:TCCx/output channel:PMUXoddeven_x)
-Picked pins for TCC0: D5:PA05:TCC0/WO1:E, D6:PA04:TCC0/WO0:E, D8:PA18:TCC0/WO2:F, D13:PA17:TCC0/WO3:F
+Picked pins for TCC0: D5:PA05:TCC0/WO1:E, D6:PA04:TCC0/WO0:E, D8:PA18:TCC0/WO2:F, D12:PA19:TCC0/WO3:F
 Picked pins for TCC1: D4:PA07:TCC1/WO1:E, D7:PA06:TCC1/WO0:E
-Picked pins for TCC2: 
+Picked pins for TCC2: D11:PA16:TCC2/WO0:E, D13:PA17:TCC2/WO1:E
 
 ------------------------------------------------------------------------------------------------------
 
@@ -81,7 +81,7 @@ Useable pins for TCC2 on Arduino MKR 1010: D8, D9
 (Arduino Pin:SAMD21 Pin:TCCx/output channel:PMUXoddeven_x)
 Picked pins for TCC0: D4:PB10:TCC0/WO4:F, D5:PB11:TCC0/WO5:F, D6:PA20:TCC0/WO6:F, D7:PA21:TCC0/WO7:F
 Picked pins for TCC1: D2:PA10:TCC1/WO0:E, D3:PA11:TCC1/WO1:E
-Picked pins for TCC2: 
+Picked pins for TCC2: D8:PA16:TCC2/WO0:E, D9:PA17:TCC2/WO1:E
 
 ------------------------------------------------------------------------------------------------------
 

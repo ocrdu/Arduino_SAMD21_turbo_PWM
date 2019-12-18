@@ -50,8 +50,10 @@ void TurboPWM::setClockDivider(unsigned int GCLKDiv, bool turbo) {
   REG_GCLK_GENDIV = GCLK_GENDIV_DIV(_GCLKDiv) | GCLK_GENDIV_ID(4);
   while (GCLK->STATUS.bit.SYNCBUSY);
 
-  // Connect GCLK4 to TCC0 and TCC1
+  // Connect GCLK4 to TCC0, TCC1, TCC2, and TC3
   REG_GCLK_CLKCTRL = GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK4 | GCLK_CLKCTRL_ID_TCC0_TCC1;
+  while (GCLK->STATUS.bit.SYNCBUSY);
+  REG_GCLK_CLKCTRL = GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK4 | GCLK_CLKCTRL_ID_TCC2_TC3;
   while (GCLK->STATUS.bit.SYNCBUSY);
 }
 
@@ -116,6 +118,16 @@ int TurboPWM::timer(int timerNumber, unsigned int TCCDiv, unsigned long long int
     while (TCC1->SYNCBUSY.bit.WAVE);
     REG_TCC1_PERB = timerTable[timerNumber].sts;
     while (TCC1->SYNCBUSY.bit.PERB);
+  } else if (timerNumber == 2) {
+    REG_TCC2_CTRLA |= my_TCC_CTRLA_PRESCALER_DIV;
+    if (timerTable[timerNumber].fastPWM) {
+      REG_TCC2_WAVE |= TCC_WAVE_WAVEGEN_NPWM;
+    } else if (!timerTable[timerNumber].fastPWM) {
+      REG_TCC2_WAVE |= TCC_WAVE_POL(0xF) | TCC_WAVE_WAVEGEN_DSBOTTOM;
+    }
+    while (TCC2->SYNCBUSY.bit.WAVE);
+    REG_TCC2_PERB = timerTable[timerNumber].sts;
+    while (TCC2->SYNCBUSY.bit.PERB);
   } else {
     return 0;
   }
@@ -163,9 +175,15 @@ int TurboPWM::analogWrite(unsigned int pin, unsigned int dutyCycle) {
   } else if (pinTable[pin].countRegister == 0x10) {
     REG_TCC1_CCB0 = (timerTable[1].sts * dutyCycle) / _maxDutyCycle;
     while (TCC1->SYNCBUSY.bit.CCB0);
-  } else  if (pinTable[pin].countRegister == 0x11) {
+  } else if (pinTable[pin].countRegister == 0x11) {
     REG_TCC1_CCB1 = (timerTable[1].sts * dutyCycle) / _maxDutyCycle;
     while (TCC1->SYNCBUSY.bit.CCB1);
+  } else if (pinTable[pin].countRegister == 0x20) {
+    REG_TCC2_CCB0 = (timerTable[2].sts * dutyCycle) / _maxDutyCycle;
+    while (TCC2->SYNCBUSY.bit.CCB0);
+  } else if (pinTable[pin].countRegister == 0x21) {
+    REG_TCC2_CCB1 = (timerTable[2].sts * dutyCycle) / _maxDutyCycle;
+    while (TCC2->SYNCBUSY.bit.CCB1);
   } else {
     return 0;
   }
@@ -188,6 +206,13 @@ void TurboPWM::enable(unsigned int timerNumber, bool enabled) {
       REG_TCC1_CTRLA &= ~(TCC_CTRLA_ENABLE);
     }
     while (TCC1->SYNCBUSY.bit.ENABLE);
+  } else if (timerNumber == 2) {
+    if (timerTable[timerNumber].enabled) {
+      REG_TCC2_CTRLA |= TCC_CTRLA_ENABLE;
+    } else {
+      REG_TCC2_CTRLA &= ~(TCC_CTRLA_ENABLE);
+    }
+    while (TCC2->SYNCBUSY.bit.ENABLE);
   }
 }
 

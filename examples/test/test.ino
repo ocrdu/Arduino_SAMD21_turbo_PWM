@@ -11,8 +11,8 @@ const int otherLED = 7;   //       change them for other boards
 
 void setup() {
   pwm.setClockDivider(1, true);     // Input clock is divided by 1 and sent to Generic Clock, Turbo is On
-  pwm.timer(0, 16, 750000, false);  // Timer 0 is set to Generic Clock divided by 16, resolution is 750000, phase-correct aka dual-slope PWM 
-  pwm.timer(1, 1, 255, true);       // Timer 1 is set to Generic Clock divided by 1, resolution is 255, normal aka fast aka single-slope PWM
+  pwm.timer(2, 256, 40000, false);  // Timer 2 is set to Generic Clock divided by 256, resolution is 40000, phase-correct aka dual-slope PWM 
+  pwm.timer(1, 1, 250, true);       // Timer 1 is set to Generic Clock divided by 1, resolution is 250, normal aka fast aka single-slope PWM
 
   Serial.begin(115200);
   while(!Serial);

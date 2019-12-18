@@ -5,9 +5,9 @@
 TurboPWM pwm;
 
 void setup() {
-  pwm.setClockDivider(4, false);
-  pwm.timer(0, 1, 12000000, true);
-  pwm.analogWrite(13, 500);
+  pwm.setClockDivider(200, false); // Main clock divided by 200 => 240KHz
+  pwm.timer(2, 4, 60000, false);   // Use timer 2 for pin 13, divide clock by 4, resolution 60000, dual-slope PWM
+  pwm.analogWrite(13, 500);        // PWM frequency is now 0.5Hz, dutycycle is 500 / 1000 * 100% = 50%
 }
 
 void loop() {}

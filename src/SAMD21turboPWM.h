@@ -18,7 +18,8 @@ class TurboPWM {
 
 //Table for looking up and storing values for TCCx
 typedef struct {
-  const unsigned long int counterSize;  // 24 bits for TCC0 and TCC1, so 0xFFFFFF
+  const unsigned int timerNumber;       // TCCx
+  const unsigned long int counterSize;  // 24 bits for TCC0 and TCC1, 16 bits for TCC2
   unsigned int TCCDiv;                  // TTCx clock divider: 1, 2, 4, 8, 16, 64, 256, or 1024
   unsigned long long int sts;           // PWM steps (resolution): 2 to counterSize
   bool fastPWM;                         // False for phase-correct aka dual-slope PWM, true for fast aka normal aka single-slope PWM
@@ -26,18 +27,19 @@ typedef struct {
 } TimerLookup;
 
 static TimerLookup timerTable[] = {
-  {0xFFFFFF, 1, 500000, false, true},
-  {0xFFFFFF, 1, 500000, false, true}
+  {0, 0xFFFFFF, 1, 500000, false, true},
+  {1, 0xFFFFFF, 1, 500000, false, true},
+  {2, 0xFFFF,   1,  50000, false, true}
 };
 static const unsigned int timerTableSize = sizeof(timerTable) / sizeof(timerTable[0]);
 
 // Tables for looking up pin mappings etc. for different boards
 typedef struct { 
-  int arduinoPin;
-  unsigned int port; 
-  unsigned int samd21Pin; 
-  unsigned int countRegister;
-  unsigned long int pMux;
+  const unsigned int arduinoPin;
+  const unsigned int port; 
+  const unsigned int samd21Pin; 
+  const unsigned int countRegister;
+  const unsigned long int pMux;
 } PinLookup;
 
 static const PinLookup pinTable[] = {
@@ -54,9 +56,9 @@ static const PinLookup pinTable[] = {
 { 8, PORTA, 18, 0x02, PORT_PMUX_PMUXE_F},
 {-1}, 
 {-1}, 
-{-1}, 
-{-1},
-{13, PORTA, 17, 0x03, PORT_PMUX_PMUXO_F}
+{11, PORTA, 16, 0x20, PORT_PMUX_PMUXE_E}, 
+{12, PORTA, 19, 0x03, PORT_PMUX_PMUXO_F},
+{13, PORTA, 17, 0x21, PORT_PMUX_PMUXO_E}
 //Table end
 
 #elif defined (ARDUINO_SAMD_MKRZERO) || \
@@ -76,7 +78,9 @@ static const PinLookup pinTable[] = {
 { 4, PORTB, 10, 0x00, PORT_PMUX_PMUXE_F},
 { 5, PORTB, 11, 0x01, PORT_PMUX_PMUXO_F},
 { 6, PORTA, 20, 0x02, PORT_PMUX_PMUXE_F},
-{ 7, PORTA, 21, 0x03, PORT_PMUX_PMUXO_F}
+{ 7, PORTA, 21, 0x03, PORT_PMUX_PMUXO_F},
+{ 8, PORTA, 16, 0x20, PORT_PMUX_PMUXE_E},
+{ 9, PORTA, 17, 0x21, PORT_PMUX_PMUXO_E}
 //Table end
 
 #else
