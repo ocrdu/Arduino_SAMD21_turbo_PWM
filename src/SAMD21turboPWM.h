@@ -6,7 +6,7 @@
 class TurboPWM {
   public:
     void setClockDivider(unsigned int GCLKDiv, bool turbo);
-    int timer(int timernumber, unsigned int TCCDiv, unsigned long long int sts, bool fastPWM);
+    int timer(int timernumber, unsigned int TCCDiv, unsigned long long int steps, bool fastPWM);
     int analogWrite(unsigned int pin, unsigned int dutyCycle);  //Duty cycle will be (dutyCycle / _maxDutyCycle) * 100%
     void enable(unsigned int timerNumber, bool enabled);
     float frequency(unsigned int timerNumber);
@@ -24,7 +24,7 @@ typedef struct {
   const RwReg* REG_TCCx_PERB;           // Pointer to timer's PERB register
   const unsigned long int counterSize;  // Timer's counter size: 24 bits for TCC0 and TCC1, 16 bits for TCC2
   unsigned int TCCDiv;                  // Timer's clock divider: 1, 2, 4, 8, 16, 64, 256, or 1024
-  unsigned long long int sts;           // Timer's PWM steps (resolution): 2 to counterSize
+  unsigned long long int steps;         // Timer's PWM steps (resolution): 2 to counterSize
   bool fastPWM;                         // False for phase-correct aka dual-slope PWM, true for fast aka normal aka single-slope PWM
   bool enabled;                         // Shows if TCCx should be enabled
 } TimerLookup;
@@ -32,7 +32,7 @@ typedef struct {
 static TimerLookup timerTable[] = {
   {TCC0, &REG_TCC0_CTRLA, &REG_TCC0_WAVE, &REG_TCC0_PERB, 0xFFFFFF, 1, 500000, false, true},
   {TCC1, &REG_TCC1_CTRLA, &REG_TCC1_WAVE, &REG_TCC1_PERB, 0xFFFFFF, 1, 500000, false, true},
-  {TCC2, &REG_TCC2_CTRLA, &REG_TCC2_WAVE, &REG_TCC2_PERB, 0xFFFF,   1,  50000, false, true}
+  {TCC2, &REG_TCC2_CTRLA, &REG_TCC2_WAVE, &REG_TCC2_PERB,   0xFFFF, 1,  50000, false, true}
 };
 static const unsigned int timerTableSize = sizeof(timerTable) / sizeof(timerTable[0]);
 
