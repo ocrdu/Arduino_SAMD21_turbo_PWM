@@ -130,6 +130,10 @@ int TurboPWM::analogWrite(unsigned int pin, unsigned int dutyCycle) {
     return 0;
   }
   
+  // Enable a SAMD21 pin as multiplexed and connect it to a pin using the port multiplexer
+  PORT->Group[pinTable[pin].port].PINCFG[pinTable[pin].samd21Pin].bit.PMUXEN = 1;
+  PORT->Group[pinTable[pin].port].PMUX[pinTable[pin].samd21Pin >> 1].reg |= pinTable[pin].pMux;
+  
   // Clamp dutycycle to the maximum duty cycle set in the header file; duty cycle will be (dutyCycle / _maxDutyCycle) * 100%
   if (dutyCycle < 0) {
     dutyCycle = 0;
@@ -137,14 +141,11 @@ int TurboPWM::analogWrite(unsigned int pin, unsigned int dutyCycle) {
   if (dutyCycle > _maxDutyCycle) {
     dutyCycle = _maxDutyCycle;
   }
-  
-  // Enable a SAMD21 pin as multiplexed and connect it to a pin using the port multiplexer
-  PORT->Group[pinTable[pin].port].PINCFG[pinTable[pin].samd21Pin].bit.PMUXEN = 1;
-  PORT->Group[pinTable[pin].port].PMUX[pinTable[pin].samd21Pin >> 1].reg |= pinTable[pin].pMux;
-  
+
   // Set duty cycle
   *(RwReg*)pinTable[pin].REG_TCCx_CCBy = (timerTable[pinTable[pin].timer].steps * dutyCycle) / _maxDutyCycle;
   while (timerTable[pinTable[pin].timer].TCCx->SYNCBUSY.vec.CCB);
+  
   return 1;
 }
 

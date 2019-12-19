@@ -7,7 +7,7 @@ class TurboPWM {
   public:
     void setClockDivider(unsigned int GCLKDiv, bool turbo);
     int timer(int timernumber, unsigned int TCCDiv, unsigned long long int steps, bool fastPWM);
-    int analogWrite(unsigned int pin, unsigned int dutyCycle);  //Duty cycle will be (dutyCycle / _maxDutyCycle) * 100%
+    int analogWrite(unsigned int pin, unsigned int dutyCycle);
     void enable(unsigned int timerNumber, bool enabled);
     float frequency(unsigned int timerNumber);
   private:
