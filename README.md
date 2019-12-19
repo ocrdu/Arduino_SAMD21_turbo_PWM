@@ -34,11 +34,11 @@ Start PWM on a pin with a duty cycle:
 
 Enable/disable a timer:
 
-```enable([0, 1, 2], [true, false]);```
+```pwm.enable([0, 1, 2], [true, false]);```
 
 Get a timer's current PWM frequency:
 
-```frequency([0, 1, 2]);```
+```pwm.frequency([0, 1, 2]);```
 
 Also see the header file and the examples.
 
