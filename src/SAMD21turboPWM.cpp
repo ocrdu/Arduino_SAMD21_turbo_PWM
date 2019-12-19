@@ -1,22 +1,13 @@
 #include "SAMD21turboPWM.h"
 
 void TurboPWM::setClockDivider(unsigned int GCLKDiv, bool turbo) {
-  // Clamp GCLKDiv to 1 - 255
-  if (GCLKDiv < 1) {
-    GCLKDiv = 1;
-  }
-  if (GCLKDiv > 255) {
-    GCLKDiv = 255;
-  }
-  _GCLKDiv = GCLKDiv;
-  
-   _turbo = turbo;
-  if (_turbo) {
-    // Configure generic clock generator 5 to use DFLL48M
+  // Configure input clock
+  if (turbo) {
+    // Configure GCLK5 to use DFLL48M
     GCLK->GENCTRL.reg = GCLK_GENCTRL_IDC | GCLK_GENCTRL_GENEN | GCLK_GENCTRL_SRC_DFLL48M | GCLK_GENCTRL_ID(5);
     while (GCLK->STATUS.bit.SYNCBUSY);
     
-    // Set GCLK5's prescaler to 48 (1 MHz)
+    // Set GCLK5's prescaler to 48 for 1 MHz
     GCLK->GENDIV.reg = GCLK_GENDIV_DIV(48) | GCLK_GENDIV_ID(5);
     while (GCLK->STATUS.bit.SYNCBUSY);
     
@@ -33,18 +24,28 @@ void TurboPWM::setClockDivider(unsigned int GCLKDiv, bool turbo) {
     // Enable DPLL
     SYSCTRL->DPLLCTRLA.reg |= SYSCTRL_DPLLCTRLA_ENABLE;
     
-    // Configure generic clock generator 4 to use DPLL96M
+    // Configure GCLK4 to use DPLL96M
     GCLK->GENCTRL.reg = GCLK_GENCTRL_IDC | GCLK_GENCTRL_GENEN | GCLK_GENCTRL_SRC_DPLL96M | GCLK_GENCTRL_ID(4);
     while (GCLK->STATUS.bit.SYNCBUSY);
     
     _turbo = true;
+    
   } else {
-    // Configure generic clock generator 4 to use DFLL48M
+    // Configure GCLK4 to use DFLL48M
     REG_GCLK_GENCTRL = GCLK_GENCTRL_IDC | GCLK_GENCTRL_GENEN | GCLK_GENCTRL_SRC_DFLL48M | GCLK_GENCTRL_ID(4);
     while (GCLK->STATUS.bit.SYNCBUSY);
     
     _turbo = false;
   }
+  
+  // Clamp GCLKDiv to 1 - 255
+  if (GCLKDiv < 1) {
+    GCLKDiv = 1;
+  }
+  if (GCLKDiv > 255) {
+    GCLKDiv = 255;
+  }
+  _GCLKDiv = GCLKDiv;
   
   // Set GCLK4's prescaler
   REG_GCLK_GENDIV = GCLK_GENDIV_DIV(_GCLKDiv) | GCLK_GENDIV_ID(4);
@@ -94,7 +95,7 @@ int TurboPWM::timer(int timerNumber, unsigned int TCCDiv, unsigned long long int
   timerTable[timerNumber].fastPWM = fastPWM;
   if (timerTable[timerNumber].fastPWM) {
     *(RwReg*)timerTable[timerNumber].REG_TCCx_WAVE |= TCC_WAVE_WAVEGEN_NPWM;
-  } else if (!timerTable[timerNumber].fastPWM) {
+  } else {
     *(RwReg*)timerTable[timerNumber].REG_TCCx_WAVE |= TCC_WAVE_POL(0xF) | TCC_WAVE_WAVEGEN_DSBOTTOM;
   }
   while (timerTable[timerNumber].TCCx->SYNCBUSY.bit.WAVE);
@@ -149,10 +150,10 @@ int TurboPWM::analogWrite(unsigned int pin, unsigned int dutyCycle) {
   return 1;
 }
 
-void TurboPWM::enable(unsigned int timerNumber, bool enabled) {
+int TurboPWM::enable(unsigned int timerNumber, bool enabled) {
   // Check timer number
   if (timerNumber >= timerTableSize) {
-    return;
+    return 0;
   }
   
   timerTable[timerNumber].enabled = enabled;
@@ -162,6 +163,8 @@ void TurboPWM::enable(unsigned int timerNumber, bool enabled) {
     *(RwReg*)timerTable[timerNumber].REG_TCCx_CTRLA &= ~(TCC_CTRLA_ENABLE);
   }
   while (timerTable[timerNumber].TCCx->SYNCBUSY.bit.ENABLE);
+  
+  return 1;
 }
 
 float TurboPWM::frequency(unsigned int timerNumber) {

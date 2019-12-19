@@ -8,7 +8,7 @@ class TurboPWM {
     void setClockDivider(unsigned int GCLKDiv, bool turbo);
     int timer(int timernumber, unsigned int TCCDiv, unsigned long long int steps, bool fastPWM);
     int analogWrite(unsigned int pin, unsigned int dutyCycle);
-    void enable(unsigned int timerNumber, bool enabled);
+    int enable(unsigned int timerNumber, bool enabled);
     float frequency(unsigned int timerNumber);
   private:
     unsigned int _GCLKDiv = 1;                // Main clock divider: 1 to 255 for both TCC0 and TCC1
