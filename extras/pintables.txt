@@ -85,7 +85,7 @@ Picked pins for TCC2: D8:PA16:TCC2/WO0:E, D9:PA17:TCC2/WO1:E
 
 ------------------------------------------------------------------------------------------------------
 
-Arduino Zero:
+Arduino Zero / Adafruit Feather M0:
 
 Pin Translation Table:
 TCC0 pins:                         TCC1 pins:           TCC2 pins:
@@ -118,5 +118,7 @@ Useable pins for TCC2 on Arduino Zero: D11, D13
 Picked pins for TCC0:
 Picked pins for TCC1: 
 Picked pins for TCC2: 
+
+------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------------
