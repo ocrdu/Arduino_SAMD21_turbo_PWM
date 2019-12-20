@@ -65,6 +65,24 @@ static const PinLookup pinTable[] = {
 {13, PORTA, 17, 2, &REG_TCC2_CCB1, PORT_PMUX_PMUXO_E}
 //Table end
 
+#elif defined (ARDUINO_SAMD_ZERO)
+//Table begin
+{-1},
+{-1},
+{-1},
+{ 3, PORTA,  9, 0, &REG_TCC0_CCB1, PORT_PMUX_PMUXO_E},
+{ 4, PORTA,  8, 0, &REG_TCC0_CCB0, PORT_PMUX_PMUXE_E},
+{-1},
+{-1},
+{-1},
+{ 8, PORTA,  6, 1, &REG_TCC1_CCB0, PORT_PMUX_PMUXE_E},
+{ 9, PORTA,  7, 1, &REG_TCC1_CCB1, PORT_PMUX_PMUXO_E},
+{10, PORTA, 18, 0, &REG_TCC0_CCB2, PORT_PMUX_PMUXE_F},
+{11, PORTA, 16, 2, &REG_TCC2_CCB0, PORT_PMUX_PMUXE_E},
+{12, PORTA, 19, 0, &REG_TCC0_CCB3, PORT_PMUX_PMUXO_F},
+{13, PORTA, 17, 2, &REG_TCC2_CCB1, PORT_PMUX_PMUXO_E}
+//Table end
+
 #elif defined (ARDUINO_SAMD_MKRZERO) || \
       defined (ARDUINO_SAMD_MKR1000) || \
       defined (ARDUINO_SAMD_MKR1010) || \
@@ -76,7 +94,7 @@ static const PinLookup pinTable[] = {
       defined (ARDUINO_SAMD_MKRVIDOR4000)
 //Table begin
 {-1},
-{-1}, 
+{-1},
 { 2, PORTA, 10, 1, &REG_TCC1_CCB0, PORT_PMUX_PMUXE_E}, 
 { 3, PORTA, 11, 1, &REG_TCC1_CCB1, PORT_PMUX_PMUXO_E},
 { 4, PORTB, 10, 0, &REG_TCC0_CCB0, PORT_PMUX_PMUXE_F},

@@ -115,8 +115,8 @@ Useable pins for TCC1 on Arduino Zero: D0, D1, D3, D4, D8, D9
 Useable pins for TCC2 on Arduino Zero: D11, D13
 
 (Arduino Pin:SAMD21 Pin:TCCx/output channel:PMUXoddeven_x)
-Picked pins for TCC0:
-Picked pins for TCC1: 
-Picked pins for TCC2: 
+Picked pins for TCC0: D3:PA09:TCC0/WO1:E D4:PA08:TCC0/WO0:E, D10:PA18:TCC0/WO2:F, D12:PA19:TCC0/WO3:F
+Picked pins for TCC1: D8:PA06:TCC1/WO0:E, D9:PA07:TCC1/WO1:E
+Picked pins for TCC2: D11:PA16:TCC2/WO0:E, D13:PA17:TCC2/WO1:E
 
 ------------------------------------------------------------------------------------------------------
