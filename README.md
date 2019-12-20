@@ -32,7 +32,7 @@ Set input clock divider and Turbo Mode (which uses a 96MHz instead of a 48Mhz in
 ```pwm.timer([0, 1, 2], [1, 2, 4, 8, 16, 64, 256, 1024], [2-MaxSteps], [true, false]);```
 
 * For the Arduino Nano 33 IoT, you need to initialise timer 1 for pins 4 and 7, timer 0 for pins 5, 6, 8, and 12, and timer 2 for pins 11 and 13;
-* For the Arduino Zero (untested), you need to initialise timer 0 for pins 3, 4, 10 and 12, timer 1 for pin 8 and 9, and timer 2 for pins 11 and 13;
+* For the Arduino Zero (untested), you need to initialise timer 0 for pins 3, 4, 10 and 12, timer 1 for pins 8 and 9, and timer 2 for pins 11 and 13;
 * For the Arduino MKR series (untested), you need to initialise timer 1 for pins 2 and 3, timer 0 for pins 4, 5, 6 and 7, and timer 2 for pins 8 and 9.
 
 MaxSteps is 0xFFFFFF for (24-bits) timers 0 and 1, and 0xFFFF for (16 bits) timer 2.
