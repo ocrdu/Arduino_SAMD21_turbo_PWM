@@ -65,7 +65,8 @@ static const PinLookup pinTable[] = {
 {13, PORTA, 17, 2, &REG_TCC2_CCB1, PORT_PMUX_PMUXO_E}
 //Table end
 
-#elif defined (ARDUINO_SAMD_ZERO)
+#elif defined (ARDUINO_SAMD_ZERO) || \
+      defined (ARDUINO_SAMD_FEATHER_M0)
 //Table begin
 {-1},
 {-1},
