@@ -1,4 +1,4 @@
-*Note: Still under development, and untested for the Arduino Zero and the MKR series.*
+*Note: Still under development, and untested for the Arduino Zero and the Arduino MKR series.*
 
 ## A fast PWM library for SAMD21G-based Arduinos
 
@@ -6,6 +6,10 @@ Uses the SAMD21's timers TCC0, TCC1, and TCC2 to generate PWM signals on eight p
 * Nano 33 IoT: 4, 5, 6, 7, 8, 11, 12, and 13;
 * Arduino Zero (untested): 3, 4, 8, 9, 10, 11, 12, and 13; 
 * MKR series (untested): 2, 3, 4, 5, 6, 7, 8, and 9.
+
+### Thanks go to ...
+
+... Martin L. and Shawn Hymel for important parts of the code, and for explaining esoteric and dark stuff.
 
 ### Usage:
 
@@ -45,11 +49,6 @@ MaxSteps is 0xFFFFFF for (24-bits) timers 0 and 1, and 0xFFFF for (16 bits) time
 
 ```pwm.frequency([0, 1, 2]);```
 
-
 Also see the header file and the examples.
 
-*All help, input, and testing is welcome, especially for the Zero and the MKR series.*
-
-### Thanks go to ...
-
-... Martin L. and Shawn Hymel for important parts of the code, and for explaining esoteric and dark stuff.
+If you feel like donating for this library, you can do so here: http://ocrdu.nl/donations .
