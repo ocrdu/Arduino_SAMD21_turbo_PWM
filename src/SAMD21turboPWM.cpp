@@ -58,7 +58,7 @@ void TurboPWM::setClockDivider(unsigned int GCLKDiv, bool turbo) {
   while (GCLK->STATUS.bit.SYNCBUSY);
 }
 
-int TurboPWM::timer(int timerNumber, unsigned int TCCDiv, unsigned long long int steps, bool fastPWM) {
+int TurboPWM::timer(unsigned int timerNumber, unsigned int TCCDiv, unsigned long long int steps, bool fastPWM) {
   // Check timer number
   if (timerNumber >= timerTableSize) {
     return 0;
@@ -119,7 +119,7 @@ int TurboPWM::timer(int timerNumber, unsigned int TCCDiv, unsigned long long int
   return 1;
 }
 
-int TurboPWM::analogWrite(unsigned int pin, unsigned int dutyCycle) {
+int TurboPWM::analogWrite(int pin, unsigned int dutyCycle) {
   // Check if an acceptable pin is used
   unsigned int i;
   for (i = 0; i < pinTableSize; i++) {
@@ -127,7 +127,7 @@ int TurboPWM::analogWrite(unsigned int pin, unsigned int dutyCycle) {
       break;
     }
   }
-  if (i >= pinTableSize) {
+  if (i >= pinTableSize || pin < 0) {
     return 0;
   }
   
@@ -136,9 +136,6 @@ int TurboPWM::analogWrite(unsigned int pin, unsigned int dutyCycle) {
   PORT->Group[pinTable[pin].port].PMUX[pinTable[pin].samd21Pin >> 1].reg |= pinTable[pin].pMux;
   
   // Clamp dutycycle to the maximum duty cycle set in the header file; duty cycle will be (dutyCycle / _maxDutyCycle) * 100%
-  if (dutyCycle < 0) {
-    dutyCycle = 0;
-  }
   if (dutyCycle > _maxDutyCycle) {
     dutyCycle = _maxDutyCycle;
   }

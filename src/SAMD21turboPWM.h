@@ -6,8 +6,8 @@
 class TurboPWM {
   public:
     void setClockDivider(unsigned int GCLKDiv, bool turbo);
-    int timer(int timernumber, unsigned int TCCDiv, unsigned long long int steps, bool fastPWM);
-    int analogWrite(unsigned int pin, unsigned int dutyCycle);
+    int timer(unsigned int timernumber, unsigned int TCCDiv, unsigned long long int steps, bool fastPWM);
+    int analogWrite(int pin, unsigned int dutyCycle);
     int enable(unsigned int timerNumber, bool enabled);
     float frequency(unsigned int timerNumber);
   private:
@@ -38,7 +38,7 @@ static const unsigned int timerTableSize = sizeof(timerTable) / sizeof(timerTabl
 
 // Tables for looking up pin mappings etc. for different boards
 typedef struct { 
-  const unsigned int arduinoPin;        // Arduino pin number
+  const int arduinoPin;                 // Arduino pin number
   const unsigned int port;              // Port of the SAMD21 pin
   const unsigned int samd21Pin;         // SAMD21 pin
   const unsigned int timer;             // Timer used for this pin
@@ -49,17 +49,17 @@ typedef struct {
 static const PinLookup pinTable[] = {
 #if defined (ARDUINO_SAMD_NANO_33_IOT)
 //Table begin
-{-1},
-{-1}, 
-{-1}, 
-{-1},
+{-1, 0, 0, 0, 0, 0},
+{-1, 0, 0, 0, 0, 0}, 
+{-1, 0, 0, 0, 0, 0}, 
+{-1, 0, 0, 0, 0, 0},
 { 4, PORTA,  7, 1, &REG_TCC1_CCB1, PORT_PMUX_PMUXO_E},
 { 5, PORTA,  5, 0, &REG_TCC0_CCB1, PORT_PMUX_PMUXO_E},
 { 6, PORTA,  4, 0, &REG_TCC0_CCB0, PORT_PMUX_PMUXE_E},
 { 7, PORTA,  6, 1, &REG_TCC1_CCB0, PORT_PMUX_PMUXE_E},
 { 8, PORTA, 18, 0, &REG_TCC0_CCB2, PORT_PMUX_PMUXE_F},
-{-1}, 
-{-1}, 
+{-1, 0, 0, 0, 0, 0}, 
+{-1, 0, 0, 0, 0, 0}, 
 {11, PORTA, 16, 2, &REG_TCC2_CCB0, PORT_PMUX_PMUXE_E}, 
 {12, PORTA, 19, 0, &REG_TCC0_CCB3, PORT_PMUX_PMUXO_F},
 {13, PORTA, 17, 2, &REG_TCC2_CCB1, PORT_PMUX_PMUXO_E}
@@ -68,14 +68,14 @@ static const PinLookup pinTable[] = {
 #elif defined (ARDUINO_SAMD_ZERO) || \
       defined (ARDUINO_SAMD_FEATHER_M0)
 //Table begin
-{-1},
-{-1},
-{-1},
+{-1, 0, 0, 0, 0, 0},
+{-1, 0, 0, 0, 0, 0},
+{-1, 0, 0, 0, 0, 0},
 { 3, PORTA,  9, 0, &REG_TCC0_CCB1, PORT_PMUX_PMUXO_E},
 { 4, PORTA,  8, 0, &REG_TCC0_CCB0, PORT_PMUX_PMUXE_E},
-{-1},
-{-1},
-{-1},
+{-1, 0, 0, 0, 0, 0},
+{-1, 0, 0, 0, 0, 0},
+{-1, 0, 0, 0, 0, 0},
 { 8, PORTA,  6, 1, &REG_TCC1_CCB0, PORT_PMUX_PMUXE_E},
 { 9, PORTA,  7, 1, &REG_TCC1_CCB1, PORT_PMUX_PMUXO_E},
 {10, PORTA, 18, 0, &REG_TCC0_CCB2, PORT_PMUX_PMUXE_F},
@@ -94,8 +94,8 @@ static const PinLookup pinTable[] = {
       defined (ARDUINO_SAMD_MKRNB1500) || \
       defined (ARDUINO_SAMD_MKRVIDOR4000)
 //Table begin
-{-1},
-{-1},
+{-1, 0, 0, 0, 0, 0},
+{-1, 0, 0, 0, 0, 0},
 { 2, PORTA, 10, 1, &REG_TCC1_CCB0, PORT_PMUX_PMUXE_E}, 
 { 3, PORTA, 11, 1, &REG_TCC1_CCB1, PORT_PMUX_PMUXO_E},
 { 4, PORTB, 10, 0, &REG_TCC0_CCB0, PORT_PMUX_PMUXE_F},
