@@ -86,7 +86,7 @@ static const PinLookup pinTable[] = {
 
 #elif defined (ARDUINO_SAMD_MKRZERO) || \
       defined (ARDUINO_SAMD_MKR1000) || \
-      defined (ARDUINO_SAMD_MKR1010) || \
+      defined (ARDUINO_SAMD_MKRWIFI1010) || \
       defined (ARDUINO_SAMD_MKRFox1200) || \
       defined (ARDUINO_SAMD_MKRWAN1300) || \
       defined (ARDUINO_SAMD_MKRWAN1310) || \
