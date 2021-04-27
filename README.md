@@ -1,4 +1,4 @@
-*Note: Tested on the Arduino Nano 33 IoT; untested on the Arduino Zero and the Arduino MKR series.*
+*Note: Tested on the Arduino Nano 33 IoT; untested on the Arduino Zero and the Arduino MKR series, but should work. Let me know about problems.*
 
 ## A fast PWM library for SAMD21G-based Arduinos
 
