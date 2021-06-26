@@ -108,9 +108,9 @@ static const PinLookup pinTable[] = {
 
 #elif defined (ADAFRUIT_TRINKET_M0)
 //Table begin
-{ 0, PORTA,  8, 0, &REG_TCC0_CCB0, PORT_PMUX_PMUXO_E},
+{ 0, PORTA,  8, 0, &REG_TCC0_CCB0, PORT_PMUX_PMUXE_E},
 {-1, 0, 0, 0, 0, 0}, //DAC
-{ 2, PORTA,  9, 0, &REG_TCC0_CCB1, PORT_PMUX_PMUXE_E},
+{ 2, PORTA,  9, 0, &REG_TCC0_CCB1, PORT_PMUX_PMUXO_E},
 { 3, PORTA,  7, 1, &REG_TCC1_CCB1, PORT_PMUX_PMUXO_E},
 { 4, PORTA,  6, 1, &REG_TCC1_CCB0, PORT_PMUX_PMUXE_E}
 //Table end
