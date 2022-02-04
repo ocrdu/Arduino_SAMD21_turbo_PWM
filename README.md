@@ -1,10 +1,10 @@
-*Note: Tested on the Arduino Nano 33 IoT and the Adafruit Trinket M0; untested on the Arduino Zero and the Arduino MKR series, but should work. Let me know about problems.*
+*Note: Tested on the Arduino Nano 33 IoT, Adafruit Itsy Bitsy M0, and the Adafruit Trinket M0; untested on the Arduino Zero and the Arduino MKR series, but should work. Let me know about problems.*
 
 ## A fast PWM library for SAMD21G-based Arduinos
 
 Uses the SAMD21's timers TCC0, TCC1, and TCC2 to generate PWM signals on eight pins (four on the Adafruit Trinket M0):
 * Nano 33 IoT: 4, 5, 6, 7, 8, 11, 12, and 13;
-* Arduino Zero (untested): 3, 4, 8, 9, 10, 11, 12, and 13; 
+* Arduino Zero (untested), Adafruit Feather M0 (untested), Adafruit Itsy Bitsy M0: 3, 4, 8, 9, 10, 11, 12, and 13; 
 * MKR series (untested): 2, 3, 4, 5, 6, 7, 8, and 9;
 * Adafruit Trinket M0: 0, 2, 3 and 4.
 
@@ -33,7 +33,7 @@ Set input clock divider and Turbo Mode (which uses a 96MHz instead of a 48Mhz in
 ```pwm.timer([0, 1, 2], [1, 2, 4, 8, 16, 64, 256, 1024], [2-MaxSteps], [true, false]);```
 
 * For the Arduino Nano 33 IoT, you need to initialise timer 1 for pins 4 and 7, timer 0 for pins 5, 6, 8, and 12, and timer 2 for pins 11 and 13;
-* For the Arduino Zero (untested), you need to initialise timer 0 for pins 3, 4, 10 and 12, timer 1 for pins 8 and 9, and timer 2 for pins 11 and 13;
+* For the Arduino Zero (untested), Adafruit Feather M0 (untested), and Adafruit Itsy Bitsy M0 you need to initialise timer 0 for pins 3, 4, 10 and 12, timer 1 for pins 8 and 9, and timer 2 for pins 11 and 13;
 * For the Arduino MKR series (untested), you need to initialise timer 1 for pins 2 and 3, timer 0 for pins 4, 5, 6 and 7, and timer 2 for pins 8 and 9;
 * For the Adafruit Trinket M0, you need to initialise timer 0 for pins 0 and 2, and timer 1 for pins 3 and 4.
 
