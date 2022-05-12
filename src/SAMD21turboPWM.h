@@ -66,6 +66,7 @@ static const PinLookup pinTable[] = {
 //Table end
 
 #elif defined (ARDUINO_SAMD_ZERO) || \
+      defined (ADAFRUIT_ITSYBITSY_M0) || \
       defined (ARDUINO_SAMD_FEATHER_M0)
 //Table begin
 {-1, 0, 0, 0, 0, 0},
