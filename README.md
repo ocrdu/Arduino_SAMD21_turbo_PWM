@@ -1,4 +1,4 @@
-*Note: Tested on the Arduino Nano 33 IoT, Adafruit Itsy Bitsy M0, and the Adafruit Trinket M0; untested on the Arduino Zero and the Arduino MKR series, but should work. Let me know about problems.*
+*Note: Tested on the Arduino Nano 33 IoT, Adafruit Itsy Bitsy M0, and the Adafruit Trinket M0; untested on the Arduino Zero, the Arduino MKR series, and the Adafruit Feather M0, but should work. Let me know about problems.*
 
 ## A fast PWM library for SAMD21G-based Arduinos
 
