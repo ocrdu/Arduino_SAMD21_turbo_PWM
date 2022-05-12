@@ -10,7 +10,7 @@ Uses the SAMD21's timers TCC0, TCC1, and TCC2 to generate PWM signals on eight p
 
 ### Thanks go to ...
 
-... Martin L. and Shawn Hymel for important parts of the code, and for explaining esoteric and dark stuff, and to infra223 for adding the Adafruit Trinket M0 support.
+... Martin L. and Shawn Hymel for important parts of the code, and for explaining esoteric and dark stuff.
 
 ### Usage:
 
